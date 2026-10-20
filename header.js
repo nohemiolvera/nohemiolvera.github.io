@@ -12,4 +12,9 @@ document.body.insertAdjacentHTML('beforeend', `<svg width="0" height="0" style="
 	<filter id="boil-${seed}" x="-5%" y="-5%" width="110%" height="110%">
 		<feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="1" seed="${seed}"/>
 		<feDisplacementMap in="SourceGraphic" scale="1.9" xChannelSelector="R" yChannelSelector="G"/>
-	</filter>`).join('')}</svg>`);
+	</filter>`).join('')}
+	<filter id="ink" color-interpolation-filters="sRGB">
+		<feFlood style="flood-color: var(--ink-strong)"/>
+		<feComposite in2="SourceAlpha" operator="in"/>
+	</filter></svg>`);
+// "ink" above repaints a graphic in the text color, for logos on the dark theme.

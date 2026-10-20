@@ -8,6 +8,10 @@
 	--accent: #f7513b;
 	--line: #d6ccc0;
 	--placeholder: #f3eee8;
+	--hover: #f7f3ed; /* halfway between --bg and --placeholder */
+	--ink-soft: #393632;
+	--meta: #8e8d8d;
+	color-scheme: light;
 
 	--serif: "Newsreader", Georgia, serif;
 	--mono: "Spline Sans Mono", ui-monospace, monospace;
@@ -21,6 +25,21 @@
 	--max: 1276px;
 }
 
+/* Dark theme (theme.js sets data-theme). Same palette, flipped: the beiges become the ink, the ink becomes the page.
+   Artwork panels keep their own colors. */
+[data-theme="dark"] {
+	--bg: #171513;
+	--ink: #d9d2c7;
+	--ink-strong: #f3eee8;
+	--muted: #8f867c;
+	--line: #36312c;
+	--placeholder: #211e1b;
+	--hover: #1c1a17;
+	--ink-soft: #d9d2c7;
+	--meta: #8f867c;
+	color-scheme: dark;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; scroll-padding-top: 100px; }
@@ -31,6 +50,7 @@ body {
 	color: var(--ink);
 	font-family: var(--serif);
 	-webkit-font-smoothing: antialiased;
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 img { display: block; max-width: 100%; height: auto; }
@@ -108,6 +128,48 @@ main,
 
 .nav a { color: #c2c2c0; } /* --bg minus --ink-strong */
 .nav a:hover { color: #04a7b7; } /* --bg minus --accent */
+/* Dark theme: no blend, so the logo and nav land exactly on the text color (the "ink" filter is in header.js). */
+[data-theme="dark"] .site-header { mix-blend-mode: normal; }
+[data-theme="dark"] .nav a { color: var(--ink-strong); }
+[data-theme="dark"] .nav a:hover { color: var(--accent); }
+[data-theme="dark"] .logo { filter: url(#ink); }
+
+/* Theme toggle (theme.js): a small square in the bottom-right corner. The glyph is the usual half-filled
+   "contrast" circle; the filled half swaps sides with the theme. */
+.theme-toggle {
+	position: fixed;
+	right: 20px;
+	bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+	z-index: 20;
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	background: color-mix(in srgb, var(--bg) 70%, transparent);
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+	color: var(--ink-strong);
+	cursor: pointer;
+	opacity: 0.7;
+	transition: opacity 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+.theme-toggle:hover,
+.theme-toggle:focus-visible { opacity: 1; background: var(--hover); }
+.theme-toggle:active { transform: scale(0.94); }
+.theme-toggle::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	box-sizing: border-box;
+	border: 1.5px solid currentColor;
+	border-radius: 50%;
+	background: linear-gradient(to right, currentColor 50%, transparent 50%);
+	transition: transform 0.4s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+[data-theme="dark"] .theme-toggle::before { transform: rotate(180deg); }
 
 /* Intro */
 
@@ -187,7 +249,7 @@ main,
 	transition: background 0.2s ease;
 }
 .clients-logos li:first-child { border-left: 1px solid var(--line); }
-.clients-logos li:hover { background: #f7f3ed; } /* halfway between --bg and --placeholder */
+.clients-logos li:hover { background: var(--hover); }
 
 .clients-logos a {
 	position: relative;
@@ -201,6 +263,10 @@ main,
 .clients-logos img { max-width: 100%; height: auto; }
 .clients-logos .clients-arrow { position: absolute; top: 0; right: -16px; background: var(--line); transition: background 0.2s ease; }
 .clients-logos a:hover .clients-arrow { background: var(--accent); }
+
+/* Client logos are drawn in the light theme's --ink-strong; repaint them in the dark one's. */
+[data-theme="dark"] .clients-logos img:not(.clients-arrow),
+[data-theme="dark"] .case-client-logo { filter: url(#ink); }
 
 /* Second copy of the list, only used by the phone marquee. */
 .clients-logos[aria-hidden] { display: none; }
@@ -266,6 +332,8 @@ main,
 
 /* Brand system thumbnail composed from Figma: the social images placed where the tile has them. */
 .work-lbs { background: #f2ede7; }
+[data-theme="dark"] .work-lbs { background: var(--placeholder); }
+.work-do { background: #fbf8f2; } /* artwork drawn for the cream page */
 .tile.work-lbs > img { position: absolute; height: auto; border-radius: 1px; box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1); }
 
 .site-footer { padding: 0 var(--gutter) 54px; }
@@ -336,7 +404,6 @@ main,
 
 /* Case study */
 
-.case { --ink-soft: #393632; --meta: #8e8d8d; }
 .case .label { color: var(--ink-soft); }
 
 .case-hero {
@@ -419,6 +486,7 @@ main,
 .case-aside .case-figure { margin-top: 34px; }
 
 .case-figure { border-radius: 0; }
+[data-theme="dark"] .case-figure { border-radius: 5px; } /* cream diagrams read as cards on the dark page */
 .case-needs-map { grid-column: 7 / span 6; aspect-ratio: 623 / 320; }
 .case-layers { width: 92.8%; aspect-ratio: 581 / 315; }
 
@@ -605,7 +673,7 @@ main,
 .jp-hero > .jp-text { position: absolute; left: 41.71%; top: 21.96%; width: 51.05%; height: auto; overflow: visible; }
 
 /* DigitalOcean square panels, 800 x 800 in Figma: artwork placed where Figma has it, caption at the bottom. */
-.do-panel { aspect-ratio: 1; background: var(--placeholder); container-type: inline-size; }
+.do-panel { aspect-ratio: 1; background: #f3eee8; container-type: inline-size; } /* light in both themes: navy artwork */
 .tile.do-panel > img { position: absolute; height: auto; object-fit: fill; }
 .do-panel > figcaption {
 	position: absolute;
@@ -630,7 +698,7 @@ main,
 	color: #0b1e48;
 }
 .do-voice li::before { content: "→"; margin-right: 1.5cqw; color: #1bc3c5; }
-.do-balance { aspect-ratio: auto; background: var(--placeholder); padding: 5% 7.5%; }
+.do-balance { aspect-ratio: auto; background: #f3eee8; padding: 5% 7.5%; }
 .do-balance > figcaption { margin-bottom: 4%; color: #0b1e48; }
 .tile.do-balance > img { height: auto; }
 .tile.do-balance--scale > img { display: block; width: 70%; margin: 0 auto; }
