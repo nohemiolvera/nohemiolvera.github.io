@@ -184,8 +184,10 @@ main,
 	height: 120px;
 	padding: 0 16px;
 	border-right: 1px solid var(--line);
+	transition: background 0.2s ease;
 }
 .clients-logos li:first-child { border-left: 1px solid var(--line); }
+.clients-logos li:hover { background: #f7f3ed; } /* halfway between --bg and --placeholder */
 
 .clients-logos a {
 	position: relative;
@@ -545,10 +547,18 @@ main,
 	font-weight: 400;
 	font-size: 1.494cqw;
 	line-height: 1.2;
-	color: #f15635;
+	color: #e54523;
 }
 
 .lc-flagship { aspect-ratio: 1200 / 675.467; background: #e54523; }
+
+/* Laracon orange in Display P3, as Figma exports it (the t-shirt SVG). The hex above is the sRGB fallback. */
+@supports (color: color(display-p3 0 0 0)) {
+	.lc-card-tagline,
+	.lc-motif-label { color: color(display-p3 0.8967 0.2707 0.1374); }
+	.lc-flagship { background: color(display-p3 0.8967 0.2707 0.1374); }
+	.case [fill="#E54523"] { fill: color(display-p3 0.8967 0.2707 0.1374); }
+}
 .lc-flagship > img,
 .lc-flagship > svg { position: absolute; display: block; height: auto; }
 .lc-flagship > .lc-flag-wordmark { left: 5.42%; top: 12.61%; width: 10.26%; }
