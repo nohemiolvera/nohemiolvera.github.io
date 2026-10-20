@@ -1,0 +1,1147 @@
+:root {
+	--bg: #fbf8f2;
+	--ink: #403f3f;
+	--ink-strong: #393632;
+	--muted: #a89e93;
+	--black: #000;
+	--darkest: #181818;
+	--accent: #f7513b;
+	--line: #d6ccc0;
+	--placeholder: #f3eee8;
+
+	--serif: "Newsreader", Georgia, serif;
+	--mono: "Spline Sans Mono", ui-monospace, monospace;
+	--sans: "Instrument Sans", system-ui, sans-serif;
+	--body: "Instrument Sans", system-ui, sans-serif;
+
+	/* Layout grid: 12 columns desktop, 8 tablet, 4 phone. Matches Figma: 12 col, 24 gutter, 82 margin. */
+	--cols: 12;
+	--gap: 24px;
+	--gutter: 82px;
+	--max: 1276px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--serif);
+	-webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+figure { margin: 0; }
+
+main,
+.site-header {
+	max-width: calc(var(--max) + 2 * var(--gutter));
+	margin: 0 auto;
+	padding: 0 var(--gutter);
+}
+
+/* Nav */
+
+/* Header stays pinned while scrolling, with no background. It blends with "difference",
+   so its colors flip against whatever is behind it: dark over the cream page, light over dark images.
+   Colors below are chosen so that, over --bg, they land on the usual ink and accent. */
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	mix-blend-mode: difference;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-top: 50px;
+	padding-bottom: 24px;
+	transition: padding 0.3s ease;
+}
+
+/* Condensed on scroll (header.js): less padding, smaller logo. */
+.site-header.is-condensed {
+	padding-top: 16px;
+	padding-bottom: 16px;
+}
+.is-condensed .logo img { height: 44px; }
+
+.logo {
+	margin-left: 21px;
+}
+
+.logo img {
+	width: auto;
+	height: 61px;
+	transition: height 0.3s ease;
+	animation: boil 0.52s infinite;
+}
+
+/* Hand-drawn wobble: the logo steps through the four filters header.js adds. */
+@keyframes boil {
+	0%, 24.9% { filter: url(#boil-1); }
+	25%, 49.9% { filter: url(#boil-2); }
+	50%, 74.9% { filter: url(#boil-3); }
+	75%, 100% { filter: url(#boil-4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.logo img { animation: none; }
+}
+
+.nav {
+	display: flex;
+	gap: 32px;
+}
+
+.nav a,
+.label {
+	font-family: var(--mono);
+	font-weight: 500;
+	font-size: 11px;
+	line-height: normal;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.nav a { color: #c2c2c0; } /* --bg minus --ink-strong */
+.nav a:hover { color: #04a7b7; } /* --bg minus --accent */
+
+/* Intro */
+
+.intro {
+	padding-top: clamp(40px, 7.5vw, 110px);
+	text-align: center;
+}
+
+.intro h1 {
+	margin: 0;
+	font-size: clamp(44px, 6.25vw, 90px);
+	font-weight: 300;
+	line-height: 1.2;
+	letter-spacing: -0.03em;
+	color: var(--muted);
+}
+
+/* Centered: "Nohemí is a …" on its own line, the rest smaller underneath. */
+.intro-lead {
+	display: block;
+	font-weight: 300;
+	color: var(--ink-strong);
+	line-height: 1.05;
+}
+
+.intro-rest {
+	display: block;
+	max-width: 23em;
+	margin: 0 auto;
+	text-wrap: balance;
+	font-size: clamp(18px, 2.5vw, 36px);
+	line-height: 1.44;
+	letter-spacing: -0.03em;
+}
+
+/* Rotating role word (roles.js). */
+.role {
+	display: inline-block;
+	transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.role.is-out { opacity: 0; transform: translateY(-0.25em); }
+.role.is-in { opacity: 0; transform: translateY(0.25em); transition: none; }
+
+/* Clients */
+
+.clients {
+	padding-top: clamp(64px, 9.7vw, 138px);
+}
+
+.label {
+	margin: 0 0 24px;
+	color: var(--muted);
+}
+
+/* Client logos in one row. Cells grow from the Figma widths (301 / 325 / 218 / 240 / 196) to fill it. */
+.clients-row {
+	border-top: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+}
+
+.clients-logos {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.clients-logos li {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1 1 var(--w);
+	min-width: 0;
+	height: 120px;
+	padding: 0 16px;
+	border-right: 1px solid var(--line);
+}
+.clients-logos li:first-child { border-left: 1px solid var(--line); }
+
+.clients-logos a {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
+.clients-logos img { max-width: 100%; height: auto; }
+.clients-logos .clients-arrow { position: absolute; top: 0; right: -16px; background: var(--line); transition: background 0.2s ease; }
+.clients-logos a:hover .clients-arrow { background: var(--accent); }
+
+/* Second copy of the list, only used by the phone marquee. */
+.clients-logos[aria-hidden] { display: none; }
+
+@keyframes marquee {
+	to { transform: translateX(-100%); }
+}
+
+/* Work */
+
+.work {
+	display: grid;
+	gap: var(--gap);
+	padding: clamp(96px, 16vw, 230px) 0 160px;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+	gap: var(--gap);
+}
+
+.span-4 { grid-column: span 4; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: 1 / -1; }
+
+.tile { aspect-ratio: 4 / 3; }
+
+.tile {
+	position: relative;
+	overflow: hidden;
+	border-radius: 5px;
+}
+
+.tile > img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.tile--placeholder { background: var(--placeholder); }
+
+/* Reproduces a Figma image crop: size and offset of the image relative to the tile. */
+.tile--crop > img {
+	position: absolute;
+	max-width: none;
+	width: var(--cw);
+	height: var(--ch);
+	left: var(--cx);
+	top: var(--cy);
+}
+
+/* Work grid: each tile has a caption under it */
+/* Work grid (after andmata.com): 20px page margins, 8px between projects,
+   images at their own proportions, rows aligned along the top. */
+.work-grid {
+	row-gap: clamp(64px, 7.8vw, 112px);
+	align-items: start;
+}
+.span-5 { grid-column: span 5; }
+.span-7 { grid-column: span 7; }
+
+/* Brand system thumbnail composed from Figma: the social images placed where the tile has them. */
+.work-lbs { background: #f2ede7; }
+.tile.work-lbs > img { position: absolute; height: auto; border-radius: 1px; box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1); }
+
+.site-footer { padding: 0 var(--gutter) 54px; }
+
+/* Big email link above the footer line. */
+.footer-cta {
+	display: block;
+	width: fit-content;
+	margin: 0 auto clamp(96px, 12vw, 172px);
+	font-size: clamp(44px, 6.25vw, 90px);
+	font-weight: 300;
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+	color: var(--ink-strong);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+.footer-cta:hover { color: var(--accent); }
+
+.footer-meta {
+	display: flex;
+	justify-content: space-between;
+	gap: 24px;
+}
+.site-footer .label { margin: 0; }
+.tile--natural { aspect-ratio: auto; }
+.tile--natural > img { height: auto; }
+.work-item { margin: 0; }
+.work-item a { display: block; color: inherit; text-decoration: none; }
+.work-item .label { display: block; margin: 12px 0 0; transition: color 0.2s ease; }
+.work-item a:hover .label { color: var(--accent); }
+
+/* Fade-ins: heroes on load, project tiles and .reveal blocks on scroll (fade.js). */
+@keyframes fade-up {
+	from { opacity: 0; transform: translateY(16px); }
+	to { opacity: 1; transform: none; }
+}
+
+.intro h1,
+.case-hero { animation: fade-up 1s cubic-bezier(0.2, 0.6, 0.2, 1) 0.1s both; }
+
+.js .work-item,
+.js .reveal {
+	opacity: 0;
+	transform: translateY(24px);
+	transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1);
+	transition-delay: var(--delay, 0s);
+}
+.js .work-item.is-visible,
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+/* Children of a .reveal-group fade in one by one after the group appears (--i set by fade.js). */
+.js .reveal-group > * {
+	opacity: 0;
+	transform: translateY(16px);
+	transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.6, 0.2, 1);
+	transition-delay: calc(0.3s + var(--i, 0) * 0.18s);
+}
+.js .reveal-group.is-visible > * { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+	.intro h1,
+	.case-hero { animation: none; }
+	.js .work-item,
+	.js .reveal,
+	.js .reveal-group > * { opacity: 1; transform: none; transition: none; }
+}
+
+/* Case study */
+
+.case { --ink-soft: #393632; --meta: #8e8d8d; }
+.case .label { color: var(--ink-soft); }
+
+.case-hero {
+	padding-top: clamp(48px, 6.3vw, 90px);
+	align-items: start;
+}
+
+.case-heading { grid-column: 1 / span 8; }
+.case-read { margin: 24px 0 0; }
+
+.case-meta { grid-column: 10 / span 3; }
+.case-client-logo { margin-bottom: 52px; }
+
+.case-meta dl { display: grid; gap: 24px; margin: 0; }
+.case-meta dl > div { display: flex; gap: 0.6em; }
+.case-meta dt,
+.case-meta dd {
+	margin: 0;
+	font-family: var(--mono);
+	font-weight: 500;
+	font-size: 11px;
+	text-transform: uppercase;
+	color: var(--ink);
+}
+.case-meta dd { color: var(--meta); }
+
+.case-title {
+	margin: 0;
+	font-size: clamp(36px, 4.45vw, 64px);
+	font-weight: 300;
+	line-height: 1.2;
+	letter-spacing: -0.03em;
+	color: var(--ink);
+}
+
+.case-section {
+	padding-top: clamp(80px, 10.8vw, 156px);
+	align-items: start;
+	row-gap: 21px;
+}
+
+.case-section > .label { margin: 0; }
+
+.case-lead {
+	grid-column: 1 / span 5;
+	margin: 0;
+	font-size: clamp(24px, 2.25vw, 32px);
+	font-weight: 300;
+	line-height: 1.46;
+	letter-spacing: -0.03em;
+	color: var(--ink);
+}
+.case-lead p { margin: 0; }
+.case-lead p + p { margin-top: 1.46em; }
+
+/* Larger lead that heads the later sections. */
+.case-lead--lg {
+	grid-column: 1 / span 6;
+	font-size: clamp(30px, 3.35vw, 48px);
+	text-wrap: balance;
+}
+
+.case-body {
+	font-family: var(--body);
+	font-size: 17px;
+	font-weight: 400;
+	line-height: 1.7;
+	letter-spacing: -0.01em;
+	color: var(--ink);
+}
+
+.case-body { grid-column: 7 / span 6; display: grid; gap: 1.77em; }
+.case-body p,
+.case-body ul { margin: 0; }
+.case-body ul { padding-left: 27px; }
+.case-body strong { font-weight: 600; }
+
+/* Lead with a diagram under it, beside a taller body. */
+.case-aside { grid-column: 1 / span 6; }
+.case-aside .case-figure { margin-top: 34px; }
+
+.case-figure { border-radius: 0; }
+.case-needs-map { grid-column: 7 / span 6; aspect-ratio: 623 / 320; }
+.case-layers { width: 92.8%; aspect-ratio: 581 / 315; }
+
+.case-media { padding-top: clamp(64px, 8.3vw, 120px); }
+.case-section + .case-media { padding-top: clamp(64px, 8.3vw, 120px); }
+
+.tile--wide { aspect-ratio: 1276 / 478; }
+
+/* Media panels: a placeholder-colored stage with the work set inside it. */
+.case-gallery {
+	aspect-ratio: auto;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 2% 2.35%;
+	padding: 5.3% 6.75%;
+}
+.case-gallery > img {
+	height: auto;
+	border-radius: 2px;
+	box-shadow: 0 10.4px 31.2px rgba(0, 0, 0, 0.1);
+}
+
+/* Video panel: video on the left, a short caption beside it. --flush sits the video on the bottom edge. */
+.case-panel {
+	aspect-ratio: auto;
+	display: grid;
+	grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+	column-gap: 4.3%;
+	align-items: center;
+	padding: 4.5% 6.75%;
+}
+.case-panel--flush { padding-top: 7.4%; padding-bottom: 0; }
+
+.case-video {
+	display: block;
+	width: 100%;
+	height: auto;
+	border: 5px solid rgba(253, 253, 255, 0.2);
+	border-radius: 5px;
+	box-shadow: 0 0 30px rgba(0, 0, 30, 0.05);
+}
+.case-panel--flush .case-video { border-radius: 5px 5px 0 0; }
+.case-video--crop { aspect-ratio: 708 / 466; object-fit: cover; object-position: top; }
+
+.case-caption {
+	font-family: var(--body);
+	font-size: 15px;
+	font-weight: 400;
+	line-height: 1.6;
+	letter-spacing: -0.01em;
+	color: var(--ink);
+}
+.case-caption p { margin: 0; }
+.case-caption .label { margin-bottom: 12px; }
+.case-caption p:not(.label) + p { margin-top: 1em; }
+.case-caption a { color: inherit; text-underline-offset: 2px; }
+.case-caption a:hover { color: var(--accent); }
+
+.case article { padding-bottom: 160px; }
+
+/* Previous and next case studies, at the end of each one. */
+.case-next {
+	margin-top: clamp(80px, 10.8vw, 156px);
+	padding-top: 32px;
+	border-top: 1px solid var(--line);
+	row-gap: 40px;
+}
+.case-pager {
+	grid-column: span 6;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	color: var(--ink);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+.case-pager--next { grid-column: 7 / span 6; align-items: flex-end; text-align: right; }
+.case-pager .label { margin: 0; }
+.case-pager-title {
+	font-size: clamp(20px, 2vw, 28px);
+	font-weight: 300;
+	line-height: 1.2;
+	letter-spacing: -0.03em;
+}
+.case-next-arrow { display: inline-block; transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.2, 1); }
+.case-pager:hover { color: var(--accent); }
+.case-pager--prev:hover .case-next-arrow { transform: translateX(-0.2em); }
+.case-pager--next:hover .case-next-arrow { transform: translateX(0.2em); }
+
+/* Back-to-back media rows sit closer together. */
+.case-media + .case-media { padding-top: var(--gap); }
+
+/* Laracon: canvases rebuilt from Figma. Each scales as a unit: 1 design px = 100cqw / design width. */
+
+.lc-card,
+.lc-motifs,
+.lc-flagship { container-type: inline-size; }
+
+.lc-card { aspect-ratio: 597.758 / 336.239; }
+.lc-card > img,
+.lc-card > svg { display: block; width: 100%; height: 100%; }
+
+.lc-card-tagline {
+	position: absolute;
+	left: 48.93%;
+	top: 66.33%;
+	margin: 0;
+	font-family: var(--mono);
+	font-size: 1.5cqw;
+	line-height: 1.36;
+	letter-spacing: -0.015cqw;
+	text-transform: uppercase;
+	color: #e54523;
+}
+
+.lc-cube-text { font-family: var(--sans); font-weight: 400; fill: #000; }
+.lc-line { fill: none; stroke: #000; stroke-width: 0.8; }
+
+.lc-motifs { aspect-ratio: 1200 / 675.467; background: #000; }
+.lc-m { position: absolute; display: block; height: auto; }
+.lc-motif-label {
+	position: absolute;
+	top: 72.2%;
+	margin: 0;
+	font-family: var(--sans);
+	font-weight: 400;
+	font-size: 1.494cqw;
+	line-height: 1.2;
+	color: #f15635;
+}
+
+.lc-flagship { aspect-ratio: 1200 / 675.467; background: #e54523; }
+.lc-flagship > img,
+.lc-flagship > svg { position: absolute; display: block; height: auto; }
+.lc-flagship > .lc-flag-wordmark { left: 5.42%; top: 12.61%; width: 10.26%; }
+.lc-flagship > .lc-flag-year { left: 16.29%; top: 12.61%; width: 2.41%; }
+.lc-flagship > .lc-flag-laravel { left: 5.42%; top: 89.71%; width: 8.49%; }
+.lc-flagship > .lc-flag-shape { left: 85.68%; top: 77.88%; width: 10.38%; }
+
+/* Headline lines are outlined type from Figma, sized against the widest line ("web artisans."). */
+.lc-flag-title {
+	position: absolute;
+	left: 5.42%;
+	top: 27.43%;
+	width: 52.96%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.833cqw;
+	font-size: 10.575cqw;
+}
+.lc-flag-title img { display: block; height: auto; }
+.lc-flag-title img:nth-child(1) { width: 91.32%; }
+.lc-flag-title img:nth-child(2) { width: 69.31%; }
+.lc-flag-title img:nth-child(3) { width: 100%; }
+
+/* Photo rows: columns sized to each photo's width in Figma, so every photo in a row shares one height. */
+.lc-row--a { grid-template-columns: 790fr 352fr; }
+.lc-row--b { grid-template-columns: 386fr 386fr 404fr; }
+.case-row .tile > img { height: 100%; object-fit: cover; }
+
+/* Laravel Live Japan photo rows, same idea. */
+.jp-row--1 { grid-template-columns: 585fr 586fr; }
+.jp-row--2 { grid-template-columns: 635fr 537fr; }
+.jp-row--3 { grid-template-columns: 359fr 848fr; }
+.jp-row--4 { grid-template-columns: 584fr 599fr; }
+
+/* Laravel Live Japan key visual, 1200 x 680. 1 design px = 100cqw / 1200. */
+.jp-hero { container-type: inline-size; aspect-ratio: 1200 / 680; background: #f7513b; }
+/* Sized so the frame's visible edges line up with the top of the title and the bottom of the year block. */
+.jp-illo { position: absolute; left: 5.93%; top: 21.07%; width: 32.87%; aspect-ratio: 1; }
+.jp-illo > img { position: absolute; display: block; height: auto; }
+.jp-illo > .jp-illo-frame { inset: 0; width: 100%; }
+.jp-illo > .jp-illo-art { left: 0; top: 13.02%; width: 99.92%; }
+
+/* Event name, year, and venue: one outlined SVG (no font needed), its five parts animated separately. */
+.jp-hero > .jp-text { position: absolute; left: 41.71%; top: 21.96%; width: 51.05%; height: auto; overflow: visible; }
+
+/* DigitalOcean square panels, 800 x 800 in Figma: artwork placed where Figma has it, caption at the bottom. */
+.do-panel { aspect-ratio: 1; background: var(--placeholder); container-type: inline-size; }
+.tile.do-panel > img { position: absolute; height: auto; object-fit: fill; }
+.do-panel > figcaption {
+	position: absolute;
+	font-family: var(--body);
+	left: 7%;
+	bottom: 6%;
+	font-size: max(14px, 2.25cqw);
+	font-weight: 500;
+	letter-spacing: -0.02em;
+	color: #0b1e48;
+}
+.do-voice { display: flex; flex-direction: column; justify-content: center; padding: 0 15.75%; font-family: var(--body); }
+.do-voice > figcaption { position: static; margin-bottom: 5.5cqw; font-size: max(16px, 3.25cqw); font-weight: 600; }
+.do-voice ul { display: grid; gap: 2.5cqw; margin: 0; padding: 0; list-style: none; }
+.do-voice li {
+	padding: 2cqw 3cqw;
+	border-radius: 1cqw;
+	background: #fff;
+	box-shadow: 0 0.5cqw 2cqw rgba(11, 30, 72, 0.08);
+	font-size: max(13px, 2.1cqw);
+	font-weight: 500;
+	color: #0b1e48;
+}
+.do-voice li::before { content: "→"; margin-right: 1.5cqw; color: #1bc3c5; }
+.do-balance { aspect-ratio: auto; background: var(--placeholder); padding: 5% 7.5%; }
+.do-balance > figcaption { margin-bottom: 4%; color: #0b1e48; }
+.tile.do-balance > img { height: auto; }
+.tile.do-balance--scale > img { display: block; width: 70%; margin: 0 auto; }
+
+/* Hacktoberfest slides, 1008 x 716.8, rebuilt from Figma. 1 design px = 100cqw / 1008. */
+.hf-slide { container-type: inline-size; aspect-ratio: 1008 / 716.8; }
+.hf-slide > img,
+.hf-slide > p,
+.hf-slide > span,
+.hf-slide > div,
+.hf-slide > pre { position: absolute; margin: 0; }
+.hf-slide > img { display: block; height: auto; }
+.hf-slide--concept { background: #1c1c1c; }
+.hf-slide--concept > p {
+	font-family: "Space Grotesk", var(--sans);
+	font-weight: 500;
+	font-size: 1.667cqw;
+	line-height: 2.222cqw;
+	color: #f3f0e0;
+}
+.hf-slide--light { background: #fbf8f2; }
+.hf-slide-label,
+.hf-slide-caption {
+	font-family: "Space Grotesk", var(--sans);
+	font-weight: 700;
+	line-height: 6.25cqw;
+	color: #1c1c1c;
+}
+.hf-slide-label { left: 5%; top: 4.1%; font-size: 1.667cqw; }
+.hf-slide-caption { top: 71.29%; font-size: 2.5cqw; color: #000; }
+.hf-slide-text {
+	left: 54.24%;
+	top: 50.5%;
+	transform: translateY(-50%);
+	width: 32.64%;
+	font-family: "Space Grotesk", var(--sans);
+	font-weight: 500;
+	font-size: 2.2cqw;
+	line-height: 3.2cqw;
+	color: #000;
+}
+.hf-slide-text p { margin: 0; }
+.hf-slide-text p + p { margin-top: 2.083cqw; }
+.hf-slide--colors { background: #fff; }
+.hf-slide--colors > span { width: 49.86%; height: 49.8%; }
+
+/* Website slide (also the static homepage thumbnail): both pages scroll top to bottom and back. Without animation they sit where Figma
+   has them (home scrolled to its footer, events at its top). */
+.hf-site { background: #d6ccc0; }
+.hf-site > img { border-radius: 0.694cqw; }
+.hf-slide > .hf-site-home { left: 12.57%; top: -49.04%; width: 25%; }
+.hf-slide > .hf-site-events { left: 40.83%; top: 3.52%; width: 46.67%; }
+@keyframes hf-scroll-home { 0%, 8% { transform: translateY(36.1%); } 46%, 54% { transform: none; } 92%, 100% { transform: translateY(36.1%); } }
+@keyframes hf-scroll-events { 0%, 8% { transform: none; } 46%, 54% { transform: translateY(-72.71%); } 92%, 100% { transform: none; } }
+.hf-site.is-visible .hf-site-home { animation: hf-scroll-home 14s ease-in-out infinite both; }
+.hf-site.is-visible .hf-site-events { animation: hf-scroll-events 14s ease-in-out infinite both; }
+
+/* Stories slide: the three stories rise in one after another, hold, leave together, and loop. */
+.hf-stories { background: #d6ccc0; }
+.hf-stories > img { width: 29.72%; border-radius: 1.042cqw; }
+.hf-stories > img:nth-child(1) { left: 4.31%; top: 26.76%; }
+.hf-stories > img:nth-child(2) { left: 35.14%; top: 14.65%; }
+.hf-stories > img:nth-child(3) { left: 65.97%; top: -1.56%; }
+@keyframes hf-story-1 { 0% { opacity: 0; transform: translateY(6%); } 14%, 85% { opacity: 1; transform: none; } 93%, 100% { opacity: 0; transform: none; } }
+@keyframes hf-story-2 { 0%, 8% { opacity: 0; transform: translateY(6%); } 22%, 85% { opacity: 1; transform: none; } 93%, 100% { opacity: 0; transform: none; } }
+@keyframes hf-story-3 { 0%, 16% { opacity: 0; transform: translateY(6%); } 30%, 85% { opacity: 1; transform: none; } 93%, 100% { opacity: 0; transform: none; } }
+.hf-stories.is-visible > img { animation: hf-story-1 4.5s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.hf-stories.is-visible > img:nth-child(2) { animation-name: hf-story-2; }
+.hf-stories.is-visible > img:nth-child(3) { animation-name: hf-story-3; }
+
+/* Events slide: while the ASCII 11 builds up one character at a time in random order, the logo fades in,
+   the headline types out line by line, and the copy fades in, all finishing as the art completes.
+   Everything holds, leaves together, and loops. */
+.hf-events { background: #183717; color: #ff8bff; }
+.hf-slide > .hf-events-dots { inset: 0; width: 100%; height: 100%; fill: #50da4c; }
+.hf-ascii {
+	left: 7.257%;
+	top: 21.48%;
+	font-family: "Space Mono", monospace;
+	font-size: 1.3214cqw;
+	line-height: 1.5873cqw;
+	white-space: pre;
+}
+.hf-slide > .hf-events-logo { left: 50%; top: 18.85%; width: 21.83%; }
+/* Headline and copy: one outlined SVG from Figma (no font needed), each part animated separately. */
+.hf-slide > .hf-events-text { position: absolute; left: 49.11%; top: 38.09%; width: 44.84%; height: auto; overflow: visible; fill: #ff8bff; }
+@keyframes hf-ev-in { 0% { opacity: 0; } 8%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-ev-logo { 0%, 6% { opacity: 0; } 12%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-type-1 { 0%, 12% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(11, end); } 20%, 85% { clip-path: inset(0); opacity: 1; } 93%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes hf-type-2 { 0%, 20% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(10, end); } 27%, 85% { clip-path: inset(0); opacity: 1; } 93%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes hf-ev-body { 0%, 26% { opacity: 0; } 32%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c0 { 0%, 0% { opacity: 0; } 1%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c1 { 0%, 1.6% { opacity: 0; } 2.6%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c2 { 0%, 3.2% { opacity: 0; } 4.2%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c3 { 0%, 4.8% { opacity: 0; } 5.8%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c4 { 0%, 6.4% { opacity: 0; } 7.4%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c5 { 0%, 8% { opacity: 0; } 9%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c6 { 0%, 9.6% { opacity: 0; } 10.6%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c7 { 0%, 11.2% { opacity: 0; } 12.2%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c8 { 0%, 12.8% { opacity: 0; } 13.8%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c9 { 0%, 14.4% { opacity: 0; } 15.4%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c10 { 0%, 16% { opacity: 0; } 17%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c11 { 0%, 17.6% { opacity: 0; } 18.6%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c12 { 0%, 19.2% { opacity: 0; } 20.2%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c13 { 0%, 20.8% { opacity: 0; } 21.8%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c14 { 0%, 22.4% { opacity: 0; } 23.4%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c15 { 0%, 24% { opacity: 0; } 25%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c16 { 0%, 25.6% { opacity: 0; } 26.6%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c17 { 0%, 27.2% { opacity: 0; } 28.2%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c18 { 0%, 28.8% { opacity: 0; } 29.8%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes hf-c19 { 0%, 30.4% { opacity: 0; } 31.4%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+.hf-events.is-visible .hf-events-dots { animation: hf-ev-in 6s ease infinite both; }
+.hf-events.is-visible .hf-events-logo { animation: hf-ev-logo 6s ease infinite both; }
+.hf-events.is-visible .hf-ascii span { animation: hf-c0 6s ease infinite both; }
+.hf-events.is-visible .hf-ev-l1 { animation: hf-type-1 6s ease infinite both; }
+.hf-events.is-visible .hf-ev-l2 { animation: hf-type-2 6s ease infinite both; }
+.hf-events.is-visible .hf-ev-p { animation: hf-ev-body 6s ease infinite both; }
+
+/* Key visual loop: frame, pixel art building up row by row, the name blocks wiping in, the year, then the
+   venue lines. Everything holds, leaves on the same frame, and starts over. */
+@keyframes jp-frame { 0% { opacity: 0; transform: scale(0.96); } 8%, 85% { opacity: 1; transform: none; } 93%, 100% { opacity: 0; transform: none; } }
+/* Stepped timing only for the build-up, so the art leaves on the same smooth fade as everything else. */
+@keyframes jp-art { 0%, 6% { clip-path: inset(100% 0 0 0); opacity: 1; animation-timing-function: steps(12, end); } 28%, 85% { clip-path: inset(0); opacity: 1; animation-timing-function: ease; } 93%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes jp-title-1 { 0%, 18% { clip-path: inset(0 100% 0 0); opacity: 1; } 30%, 85% { clip-path: inset(0); opacity: 1; } 93%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes jp-title-2 { 0%, 24% { clip-path: inset(0 100% 0 0); opacity: 1; } 34%, 85% { clip-path: inset(0); opacity: 1; } 93%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes jp-year { 0%, 34% { opacity: 0; } 41%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes jp-venue-1 { 0%, 38% { clip-path: inset(0 100% 0 0); opacity: 1; } 46%, 85% { clip-path: inset(0); opacity: 1; } 93%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes jp-venue-2 { 0%, 42% { clip-path: inset(0 100% 0 0); opacity: 1; } 50%, 85% { clip-path: inset(0); opacity: 1; } 93%, 100% { clip-path: inset(0); opacity: 0; } }
+.jp-hero.is-visible .jp-illo-frame { animation: jp-frame 4.5s ease infinite both; }
+.jp-hero.is-visible .jp-illo-art { animation: jp-art 4.5s ease infinite both; }
+.jp-hero.is-visible .jp-t1 { animation: jp-title-1 4.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+.jp-hero.is-visible .jp-t2 { animation: jp-title-2 4.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+.jp-hero.is-visible .jp-y { animation: jp-year 4.5s ease infinite both; }
+.jp-hero.is-visible .jp-v1 { animation: jp-venue-1 4.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+.jp-hero.is-visible .jp-v2 { animation: jp-venue-2 4.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+
+/* The "shipped" shape grows out of its small back square: scaled down from the bottom-left corner,
+   the whole shape is exactly the size of that square. */
+.lc-grow { transform-box: fill-box; transform-origin: 0 100%; }
+
+/* Loops start the moment a canvas scrolls into view (fade.js adds .is-visible), so every part of a
+   canvas shares one clock. Without JS or with reduced motion, the final frame shows. */
+@keyframes lc-draw {
+	0%, 4% { stroke-dashoffset: 1; opacity: 1; }
+	24%, 88% { stroke-dashoffset: 0; opacity: 1; }
+	96%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes lc-draw-late {
+	0%, 20% { stroke-dashoffset: 1; opacity: 1; }
+	32%, 88% { stroke-dashoffset: 0; opacity: 1; }
+	96%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes lc-fill {
+	0%, 32% { opacity: 0; }
+	40%, 88% { opacity: 1; }
+	96%, 100% { opacity: 0; }
+}
+@keyframes lc-grow-loop {
+	0%, 44% { transform: scale(0.055); opacity: 1; }
+	62%, 88% { transform: scale(1); opacity: 1; }
+	96% { transform: scale(1); opacity: 0; }
+	100% { transform: scale(0.055); opacity: 0; }
+}
+
+.is-visible .lc-cubes .lc-draw { stroke-dasharray: 1; animation: lc-draw 4.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+.is-visible .lc-cubes .lc-draw--late { animation-name: lc-draw-late; }
+.is-visible .lc-cubes .lc-fill { animation: lc-fill 4.5s ease infinite both; }
+.is-visible .lc-cubes .lc-grow { animation: lc-grow-loop 4.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+
+/* Flagship slide loops: every element enters on its own beat, in reading order (Laracon, 26, the three
+   lines, Laravel, then the shape), all hold together, then all leave on the same frame and it starts over.
+   Each element gets its own keyframes so the entrances stagger but the exit is shared. */
+@keyframes lc-flag-wordmark {
+	0% { opacity: 0; }
+	7%, 85% { opacity: 1; }
+	93%, 100% { opacity: 0; }
+}
+@keyframes lc-flag-year {
+	0%, 5% { opacity: 0; }
+	12%, 85% { opacity: 1; }
+	93%, 100% { opacity: 0; }
+}
+@keyframes lc-line-0 {
+	0%, 12% { opacity: 0; transform: translateY(0.35em); }
+	24%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-line-1 {
+	0%, 16% { opacity: 0; transform: translateY(0.35em); }
+	28%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-line-2 {
+	0%, 20% { opacity: 0; transform: translateY(0.35em); }
+	32%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-flag-laravel {
+	0%, 30% { opacity: 0; }
+	37%, 85% { opacity: 1; }
+	93%, 100% { opacity: 0; }
+}
+/* The whole shape, small square included, shows only for its part of the loop. */
+@keyframes lc-shape-show {
+	0%, 36% { opacity: 0; }
+	40%, 85% { opacity: 1; }
+	93%, 100% { opacity: 0; }
+}
+@keyframes lc-shape-loop {
+	0%, 38% { transform: scale(0.055); }
+	54%, 93% { transform: scale(1); }
+	100% { transform: scale(0.055); }
+}
+.lc-flagship.is-visible > .lc-flag-wordmark { animation: lc-flag-wordmark 3.5s ease infinite both; }
+.lc-flagship.is-visible > .lc-flag-year { animation: lc-flag-year 3.5s ease infinite both; }
+.lc-flagship.is-visible > .lc-flag-laravel { animation: lc-flag-laravel 3.5s ease infinite both; }
+.lc-flagship.is-visible > .lc-flag-shape { animation: lc-shape-show 3.5s ease infinite both; }
+.is-visible .lc-flag-title img { animation: lc-line-0 3.5s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-flag-title img:nth-child(2) { animation-name: lc-line-1; }
+.is-visible .lc-flag-title img:nth-child(3) { animation-name: lc-line-2; }
+.lc-flagship.is-visible .lc-grow { animation: lc-shape-loop 3.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+
+/* Motif panel loops left to right: collaboration rises from its squares, community pushes out from the
+   center (--dx/--dy point each cube back toward it), and the alignment grid fills in a diagonal wave. */
+@keyframes lc-m-collab {
+	0%, 4% { clip-path: inset(100% 0 0 0); opacity: 1; }
+	26%, 85% { clip-path: inset(0); opacity: 1; }
+	93%, 100% { clip-path: inset(0); opacity: 0; }
+}
+.is-visible .lc-m-collab { animation: lc-m-collab 6s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+
+/* Each label fades in once its motif has built, and leaves with everything else. */
+@keyframes lc-m-label-0 { 0%, 22% { opacity: 0; } 30%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes lc-m-label-1 { 0%, 42% { opacity: 0; } 50%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+@keyframes lc-m-label-2 { 0%, 62% { opacity: 0; } 70%, 85% { opacity: 1; } 93%, 100% { opacity: 0; } }
+.is-visible .lc-motif-label { animation: lc-m-label-0 6s ease infinite both; }
+.is-visible .lc-motif-label:nth-of-type(2) { animation-name: lc-m-label-1; }
+.is-visible .lc-motif-label:nth-of-type(3) { animation-name: lc-m-label-2; }
+@keyframes lc-m-e0 {
+	0%, 22% { opacity: 0; transform: translate(var(--dx), var(--dy)); }
+	34%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-e1 {
+	0%, 28% { opacity: 0; transform: translate(var(--dx), var(--dy)); }
+	40%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-e2 {
+	0%, 34% { opacity: 0; transform: translate(var(--dx), var(--dy)); }
+	46%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a0 {
+	0%, 38% { opacity: 0; transform: translate(-6px, 6px); }
+	50%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a1 {
+	0%, 40.5% { opacity: 0; transform: translate(-6px, 6px); }
+	52.5%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a2 {
+	0%, 43% { opacity: 0; transform: translate(-6px, 6px); }
+	55%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a3 {
+	0%, 45.5% { opacity: 0; transform: translate(-6px, 6px); }
+	57.5%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a4 {
+	0%, 48% { opacity: 0; transform: translate(-6px, 6px); }
+	60%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a5 {
+	0%, 50.5% { opacity: 0; transform: translate(-6px, 6px); }
+	62.5%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a6 {
+	0%, 53% { opacity: 0; transform: translate(-6px, 6px); }
+	65%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a7 {
+	0%, 55.5% { opacity: 0; transform: translate(-6px, 6px); }
+	67.5%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes lc-m-a8 {
+	0%, 58% { opacity: 0; transform: translate(-6px, 6px); }
+	70%, 85% { opacity: 1; transform: none; }
+	93%, 100% { opacity: 0; transform: none; }
+}
+.is-visible .lc-m-e0 { animation: lc-m-e0 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-e1 { animation: lc-m-e1 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-e2 { animation: lc-m-e2 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a0 { animation: lc-m-a0 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a1 { animation: lc-m-a1 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a2 { animation: lc-m-a2 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a3 { animation: lc-m-a3 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a4 { animation: lc-m-a4 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a5 { animation: lc-m-a5 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a6 { animation: lc-m-a6 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a7 { animation: lc-m-a7 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+.is-visible .lc-m-a8 { animation: lc-m-a8 6s cubic-bezier(0.2, 0.6, 0.2, 1) infinite both; }
+
+@media (prefers-reduced-motion: reduce) {
+	.hf-site > img,
+	.hf-stories > img,
+	.hf-events > *,
+	.hf-events .hf-ascii span,
+	.hf-events-text g,
+	.jp-hero .jp-illo-frame,
+	.jp-hero .jp-illo-art,
+	.jp-hero .jp-text g,
+	.lc-anim .lc-m-collab,
+	.lc-anim .lc-motif-label,
+	.lc-anim [class^="lc-m-"],
+	.lc-anim .lc-draw,
+	.lc-anim .lc-fill,
+	.lc-anim .lc-grow,
+	.lc-anim .lc-flag-title img,
+	.lc-flagship > img,
+	.lc-flagship > svg { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0; }
+}
+
+/* About */
+
+.about {
+	padding-top: clamp(64px, 9.4vw, 134px);
+	align-items: start;
+}
+
+.about-text {
+	grid-column: 1 / span 7;
+	font-family: var(--body);
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 1.7;
+	letter-spacing: -0.01em;
+	color: var(--ink);
+}
+
+.about-text p { margin: 0 0 1.46em; }
+
+.about-lead {
+	margin: 0 0 1em;
+	font-family: var(--serif);
+	font-size: clamp(36px, 3.35vw, 48px);
+	font-weight: 300;
+	line-height: 1.29;
+	letter-spacing: -0.03em;
+}
+
+.about-portrait {
+	grid-column: 9 / span 4;
+	aspect-ratio: 409 / 537;
+}
+
+/* Mural strip: full-bleed row that slides sideways with the scroll (strip.js). */
+.about-strip {
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+	padding-top: clamp(80px, 11.5vw, 165px);
+	overflow: hidden;
+}
+.about-strip-track {
+	display: flex;
+	gap: clamp(10px, 1.2vw, 17px);
+	width: max-content;
+	will-change: transform;
+}
+.about-strip-track img {
+	display: block;
+	width: 32.6vw;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: 5px;
+}
+
+.about-strip-caption {
+	max-width: calc(var(--max) + 2 * var(--gutter));
+	margin: 16px auto 0;
+	padding: 0 var(--gutter);
+}
+
+.about-making {
+	padding-top: clamp(80px, 10vw, 143px);
+	row-gap: 32px;
+	align-items: start;
+}
+.about-making-title {
+	grid-column: 1 / span 6;
+	margin: 0;
+	font-size: clamp(30px, 3.1vw, 45px);
+	font-weight: 300;
+	line-height: 1.29;
+	letter-spacing: -0.03em;
+	color: var(--ink);
+}
+.about-making p {
+	grid-column: span 6;
+	margin: 0;
+	font-family: var(--body);
+	font-size: 18px;
+	line-height: 1.7;
+	letter-spacing: -0.01em;
+	color: var(--ink);
+}
+.about-making-title + p { grid-column: 1 / span 6; }
+.about-making a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+.about-making a:hover { color: var(--accent); }
+
+/* Black-and-white photos of the painting, columns sized so all three share one height. */
+.about-photos {
+	grid-template-columns: 435fr 403fr 393fr;
+	padding: clamp(96px, 12.8vw, 184px) 0 160px;
+}
+.about-photos .tile { margin: 0; filter: grayscale(1); }
+.about-photos .tile:nth-child(1) { aspect-ratio: 435 / 545; }
+.about-photos .tile:nth-child(1) img { object-position: 50% 15%; }
+.about-photos .tile:nth-child(2) { aspect-ratio: 403 / 545; }
+.about-photos .tile:nth-child(3) { aspect-ratio: 393 / 545; }
+
+@media (prefers-reduced-motion: reduce) {
+	.about-strip { overflow-x: auto; }
+}
+
+/* Tablet: 8 columns */
+
+@media (max-width: 1024px) {
+	:root { --cols: 8; --gap: 20px; --gutter: 40px; }
+	.span-4, .span-5, .span-6, .span-7 { grid-column: span 4; }
+	.clients-logos li { height: 96px; padding: 0 12px; }
+	.clients-logos .clients-arrow { right: -12px; }
+}
+
+/* Phone: 4 columns */
+
+@media (max-width: 720px) {
+	:root { --cols: 4; --gap: 16px; --gutter: 16px; }
+	.span-4, .span-5, .span-6, .span-7 { grid-column: 1 / -1; }
+	.site-header { padding-top: 24px; padding-bottom: 16px; }
+	.logo { margin: 0; }
+	.logo img { height: 36px; }
+	.nav { gap: 16px; }
+	.is-condensed .logo img { height: 36px; }
+	/* Phone: the row becomes a marquee, with the list duplicated so the loop is seamless. */
+	.clients-row {
+		display: flex;
+		overflow: hidden;
+		-webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+		mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+	}
+	.clients-logos,
+	.clients-logos[aria-hidden] { display: flex; flex: none; animation: marquee 30s linear infinite; }
+	.clients-logos li { flex: none; width: calc(var(--w) * 0.6); height: 80px; }
+	.clients-logos li:first-child { border-left: 0; }
+	.clients-logos img { max-height: 22px; width: auto; }
+}
+
+/* Case study: tablet and phone stack the two-column rows */
+
+@media (max-width: 1024px) {
+	.case-heading,
+	.case-meta,
+	.case-lead,
+	.case-body,
+	.case-aside,
+	.case-needs-map { grid-column: 1 / -1; }
+	.case-meta { margin-top: 40px; }
+	.case-pager { grid-column: span 4; }
+	.case-pager--next { grid-column: 5 / span 4; }
+	.case-body,
+	.case-needs-map { margin-top: 12px; }
+	.about-text,
+	.about-making-title,
+	.about-making p,
+	.about-making-title + p { grid-column: 1 / -1; }
+	.about-portrait { grid-column: 1 / span 5; grid-row: 1; margin-bottom: 24px; }
+}
+
+@media (max-width: 720px) {
+	.case-media .span-6 { grid-column: 1 / -1; }
+	.tile--wide { aspect-ratio: 4 / 3; }
+	.case-body { font-size: 16px; }
+	.case-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 24px 16px; }
+	.case-panel { grid-template-columns: 1fr; row-gap: 20px; padding: 24px 16px; }
+	.case-panel--flush { padding-bottom: 0; }
+	.case-caption { order: -1; }
+	.case-video { border-width: 3px; }
+	.case-row { grid-template-columns: 1fr; }
+	/* Phone: just "← Previous" and "Up next →" side by side; the project names stay for screen readers. */
+	.case-pager { grid-column: span 2; flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 8px; }
+	.case-pager--next { grid-column: 3 / span 2; flex-direction: row; justify-content: flex-end; }
+	.case-pager-title { font-size: 16px; }
+	.case-pager .case-next-arrow { position: relative; top: 0.2em; }
+	.case-pager-name {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.about-text { font-size: 18px; }
+	.about-lead { font-size: 30px; }
+	.about-portrait { grid-column: 1 / -1; }
+	.about-strip-track img { width: 75vw; }
+	.about-photos { grid-template-columns: 1fr; }
+	.about-photos .tile:nth-child(n) { aspect-ratio: 4 / 5; }
+}
+
+@media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+	.clients-logos { animation: none !important; }
+	.clients-logos[aria-hidden] { display: none; }
+	.clients-row { overflow-x: auto; }
+}
