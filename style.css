@@ -432,7 +432,7 @@ main,
 	aspect-ratio: auto;
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 2% 2.35%;
+	gap: clamp(12px, 2vw, 26px); /* not %: a % row gap collapses when the height is auto */
 	padding: 5.3% 6.75%;
 }
 .case-gallery > img {
