@@ -528,7 +528,8 @@ main,
 	border-radius: 5px;
 	box-shadow: 0 0 30px rgba(0, 0, 30, 0.05);
 }
-.case-panel--flush .case-video { border-radius: 5px 5px 0 0; }
+.case-panel--flush .case-video { border-radius: 5px 5px 0 0; border-bottom: 0; }
+[data-theme="dark"] .case-video { border-color: rgba(253, 253, 255, 0.08); }
 .case-video--crop { aspect-ratio: 708 / 466; object-fit: cover; object-position: top; }
 
 .case-caption {
@@ -743,7 +744,7 @@ main,
 .hf-slide-text p { margin: 0; }
 .hf-slide-text p + p { margin-top: 2.083cqw; }
 .hf-slide--colors { background: #fff; }
-.hf-slide--colors > span { width: 49.86%; height: 49.8%; }
+.hf-slide--colors > span { width: 50.1%; height: 50.1%; } /* just past half, so the four colors meet with no seam */
 
 /* Website slide (also the static homepage thumbnail): both pages scroll top to bottom and back. Without animation they sit where Figma
    has them (home scrolled to its footer, events at its top). */
@@ -1196,6 +1197,7 @@ main,
 	.case-panel--flush { padding-bottom: 0; }
 	.case-caption { order: -1; }
 	.case-video { border-width: 3px; }
+	.case-panel--flush .case-video { border-bottom-width: 0; }
 	.case-row { grid-template-columns: 1fr; }
 	/* Phone: just "← Previous" and "Up next →" side by side; the project names stay for screen readers. */
 	.case-pager { grid-column: span 2; flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 8px; }
