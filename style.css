@@ -1153,6 +1153,10 @@ main,
 	.logo img { height: 36px; }
 	.nav { gap: 16px; }
 	.is-condensed .logo img { height: 36px; }
+	/* Phone hero: more air above and below, so it holds the first screen on its own. */
+	.intro { padding-top: 88px; }
+	.intro-rest { margin-top: 16px; }
+	.clients { padding-top: 160px; }
 	/* Phone: the row becomes a marquee, with the list duplicated so the loop is seamless. */
 	.clients-row {
 		display: flex;
