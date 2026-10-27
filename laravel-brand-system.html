@@ -12,6 +12,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,200;6..72,300;6..72,400;6..72,600&family=Spline+Sans+Mono:wght@500&display=swap" rel="stylesheet">
 	<meta name="theme-color" content="#fbf8f2">
 	<script src="theme.js"></script>
+	<script src="transition.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<script>document.documentElement.classList.add('js')</script>
 </head>
@@ -81,7 +82,7 @@
 
 			<section class="case-section grid reveal">
 				<h2 class="case-lead case-lead--lg">Every request is a signal. I mapped what each team needed, then sent each need where it fits.</h2>
-				<div class="tile tile--crop case-figure case-needs-map" style="--cw: 104.86%; --ch: 112.08%; --cx: -2.43%; --cy: 0%">
+				<div class="tile tile--crop case-figure case-needs-map" style="--cw: 90%; --ch: 96.16%; --cx: 5%; --cy: 5.66%">
 					<img src="assets/lbs-team-needs-map.png" width="1640" height="900" alt="Map of each marketing team’s design needs, sorted into self-serve tools, AI skills, and work that stays with design">
 				</div>
 			</section>
@@ -101,7 +102,7 @@
 				<h2 id="system" class="label span-12">The system</h2>
 				<div class="case-aside">
 					<p class="case-lead case-lead--lg">I designed the brand as three layers, so every site, skill, and tool reads from one source and nothing drifts.</p>
-					<div class="tile tile--crop case-figure case-layers" style="--cw: 100.22%; --ch: 120.32%; --cx: -0.11%; --cy: -20.32%">
+					<div class="tile tile--crop case-figure case-layers" style="--cw: 90%; --ch: 113.5%; --cx: 5%; --cy: -14.8%">
 						<img src="assets/lbs-system-layers.png" width="1524" height="992" alt="Diagram of the three layers: source of truth, the brand written down, and what people use">
 					</div>
 				</div>
@@ -110,10 +111,11 @@
 					<p><strong>2. The brand, written down.</strong> Rules in plain words that people and Claude both follow, checks that catch anything drifting from the source, and a log of every decision with its reason. A fix made once carries into every future asset instead of staying in one project.</p>
 					<p><strong>3. What people use.</strong> Three things shipped, each inheriting every brand decision from the layers above:</p>
 					<ul>
-						<li>Claude brand system. One skill per kind of output (interface, visuals, slides, PDF), so AI-generated work is on-brand by default instead of fixed afterward.</li>
-						<li>Brand guidelines site. The basics of the brand, plus fonts, logos, tokens, and skills to download, rebuilt whenever a foundation changes.</li>
-						<li>Self-serve tools for blog and social images. Marketers type a title and export. I launched them with type and color locked first and illustration left for later, so people could trust every output instead of fixing a third of it.</li>
+						<li><strong>The human-friendly system:</strong> the brand guidelines site. The basics of the brand, written for people to browse and learn, plus fonts, logos, tokens, and skills to download, rebuilt whenever a foundation changes.</li>
+						<li><strong>The agent-friendly system:</strong> the Claude brand system. The same rules, written for agents to read and follow, with one skill per kind of output (interface, visuals, slides, PDF), so AI-generated work is on-brand by default instead of fixed afterward.</li>
+						<li><strong>Self-serve tools for blog and social images:</strong> marketers type a title and export. I launched them with type and color locked first and illustration left for later, so people could trust every output instead of fixing a third of it.</li>
 					</ul>
+					<p>Both systems read from the same source, so a change made once in Figma reaches people and agents.</p>
 				</div>
 			</section>
 
@@ -121,7 +123,7 @@
 				<figure class="reveal tile tile--placeholder span-12 case-panel case-panel--flush">
 					<video class="case-video" src="assets/lbs-guidelines-site.mp4" poster="assets/lbs-guidelines-site-poster.jpg" width="1440" height="842" muted loop playsinline preload="none" controls aria-label="Scrolling through the Laravel brand guidelines site"></video>
 					<figcaption class="case-caption">
-						<p class="label">Brand guidelines site</p>
+						<p class="label">The human-friendly system</p>
 						<p>The central hub for the brand. People learn the basics, then download what they need to build their own assets and tools: fonts, logos, design tokens, and Claude skills. Every download comes from the same source, so it’s never out of date.</p>
 					</figcaption>
 				</figure>
@@ -167,7 +169,7 @@
 	<footer class="site-footer">
 		<a class="footer-cta" href="mailto:nohemi.olvera@gmail.com">Let’s work together</a>
 		<div class="footer-meta">
-			<p class="label">Nohemi.design Nohemi Olvera © 2026</p>
+			<p class="label">Nohemi Olvera © 2026</p>
 			<p class="label"><time class="clock" data-tz="America/Chicago">CT</time></p>
 		</div>
 	</footer>
