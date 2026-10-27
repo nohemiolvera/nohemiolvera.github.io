@@ -86,7 +86,7 @@ main,
 	padding-top: 16px;
 	padding-bottom: 16px;
 }
-.is-condensed .logo img { height: 44px; }
+.is-condensed .logo img { height: 40px; }
 
 .logo {
 	margin-left: 21px;
@@ -94,7 +94,7 @@ main,
 
 .logo img {
 	width: auto;
-	height: 61px;
+	height: 52px;
 	transition: height 0.3s ease;
 	animation: boil 0.52s infinite;
 }
@@ -134,8 +134,8 @@ main,
 [data-theme="dark"] .nav a:hover { color: var(--accent); }
 [data-theme="dark"] .logo { filter: url(#ink); }
 
-/* Theme toggle (theme.js): a small square in the bottom-right corner. The glyph is the usual half-filled
-   "contrast" circle; the filled half swaps sides with the theme. */
+/* Theme toggle (theme.js): a small square in the bottom-right corner. It shows a moon on the light theme
+   and a sun on the dark one, the theme a click switches to. */
 .theme-toggle {
 	position: fixed;
 	right: 20px;
@@ -163,13 +163,16 @@ main,
 	content: "";
 	width: 16px;
 	height: 16px;
-	box-sizing: border-box;
-	border: 1.5px solid currentColor;
-	border-radius: 50%;
-	background: linear-gradient(to right, currentColor 50%, transparent 50%);
+	background: currentColor;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z'/%3E%3C/svg%3E") center / contain no-repeat;
 	transition: transform 0.4s cubic-bezier(0.2, 0.6, 0.2, 1);
 }
-[data-theme="dark"] .theme-toggle::before { transform: rotate(180deg); }
+[data-theme="dark"] .theme-toggle::before {
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4' fill='%23000'/%3E%3Cpath d='M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4' fill='%23000'/%3E%3Cpath d='M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E");
+	transform: rotate(90deg);
+}
 
 /* Intro */
 
@@ -180,7 +183,7 @@ main,
 
 .intro h1 {
 	margin: 0;
-	font-size: clamp(44px, 6.25vw, 90px);
+	font-size: clamp(36px, 4.3vw, 62px);
 	font-weight: 300;
 	line-height: 1.2;
 	letter-spacing: -0.03em;
@@ -197,10 +200,10 @@ main,
 
 .intro-rest {
 	display: block;
-	max-width: 23em;
+	max-width: 25em;
 	margin: 0 auto;
 	text-wrap: balance;
-	font-size: clamp(18px, 2.5vw, 36px);
+	font-size: clamp(18px, 1.75vw, 24px);
 	line-height: 1.44;
 	letter-spacing: -0.03em;
 }
@@ -243,7 +246,7 @@ main,
 	justify-content: center;
 	flex: 1 1 var(--w);
 	min-width: 0;
-	height: 120px;
+	height: 104px;
 	padding: 0 16px;
 	border-right: 1px solid var(--line);
 	transition: background 0.2s ease;
@@ -261,6 +264,7 @@ main,
 }
 
 .clients-logos img { max-width: 100%; height: auto; }
+.clients-logos img:not(.clients-arrow) { scale: 0.9; }
 .clients-logos .clients-arrow { position: absolute; top: 0; right: -16px; background: var(--line); transition: background 0.2s ease; }
 .clients-logos a:hover .clients-arrow { background: var(--accent); }
 
@@ -343,7 +347,7 @@ main,
 	display: block;
 	width: fit-content;
 	margin: 0 auto clamp(96px, 12vw, 172px);
-	font-size: clamp(44px, 6.25vw, 90px);
+	font-size: clamp(36px, 4.3vw, 62px); /* same as the hero headline */
 	font-weight: 300;
 	line-height: 1.1;
 	letter-spacing: -0.03em;
@@ -364,6 +368,10 @@ main,
 .work-item { margin: 0; }
 .work-item a { display: block; color: inherit; text-decoration: none; }
 .work-item .label { display: block; margin: 12px 0 0; transition: color 0.2s ease; }
+/* Caption under each project: client in the serif, then the work in one line of sans. */
+.work-title { display: block; margin: 22px 0 0; font-size: 21px; font-weight: 400; line-height: 1.2; letter-spacing: -0.02em; color: var(--ink-strong); transition: color 0.2s ease; }
+.work-item a:hover .work-title { color: var(--accent); }
+.work-desc { max-width: 34em; margin: 6px 0 0; font-family: var(--sans); font-size: 15px; line-height: 1.45; color: var(--muted); }
 .work-item a:hover .label { color: var(--accent); }
 
 /* Fade-ins: heroes on load, project tiles and .reveal blocks on scroll (fade.js). */
@@ -1139,7 +1147,7 @@ main,
 @media (max-width: 1024px) {
 	:root { --cols: 8; --gap: 20px; --gutter: 40px; }
 	.span-4, .span-5, .span-6, .span-7 { grid-column: span 4; }
-	.clients-logos li { height: 96px; padding: 0 12px; }
+	.clients-logos li { height: 84px; padding: 0 12px; }
 	.clients-logos .clients-arrow { right: -12px; }
 }
 
@@ -1150,9 +1158,9 @@ main,
 	.span-4, .span-5, .span-6, .span-7 { grid-column: 1 / -1; }
 	.site-header { padding-top: 24px; padding-bottom: 16px; }
 	.logo { margin: 0; }
-	.logo img { height: 36px; }
+	.logo img { height: 32px; }
 	.nav { gap: 16px; }
-	.is-condensed .logo img { height: 36px; }
+	.is-condensed .logo img { height: 32px; }
 	/* Phone hero: more air above and below, so it holds the first screen on its own. */
 	.intro { padding-top: 88px; }
 	.intro-rest { margin-top: 16px; }
