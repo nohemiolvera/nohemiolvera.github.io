@@ -134,6 +134,35 @@ main,
 [data-theme="dark"] .nav a:hover { color: var(--accent); }
 [data-theme="dark"] .logo { filter: url(#ink); }
 
+/* Page transition (transition.js): a panel in the ink color slides up over the page with the logo in the page color,
+   then fades off the next page, so there's one slide. .is-arriving covers a new page before its first paint. */
+.page-panel,
+.is-arriving::before,
+.is-arriving::after {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	pointer-events: none;
+}
+.page-panel,
+.is-arriving::before { background: var(--ink-strong); }
+.page-panel::after,
+.is-arriving::after {
+	content: "";
+	background: var(--bg);
+	-webkit-mask: url("assets/logo-signature.svg") center / clamp(110px, 11vw, 150px) auto no-repeat;
+	mask: url("assets/logo-signature.svg") center / clamp(110px, 11vw, 150px) auto no-repeat;
+}
+.is-arriving::before { content: ""; }
+.page-panel::after { position: absolute; inset: 0; }
+.page-panel.is-covering { animation: page-panel-cover 1s cubic-bezier(0.9, 0, 0.1, 1) both; }
+.page-panel.is-covering::after { animation: page-mark-cover 1s cubic-bezier(0.9, 0, 0.1, 1) both, page-mark-in 1s ease-in-out both; }
+.page-panel.is-revealing { animation: page-panel-reveal 0.6s ease both; }
+@keyframes page-panel-cover { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes page-panel-reveal { from { opacity: 1; } to { opacity: 0; } }
+@keyframes page-mark-cover { from { transform: translateY(25vh); } to { transform: none; } }
+@keyframes page-mark-in { 0%, 55% { opacity: 0; } 85%, 100% { opacity: 1; } }
+
 /* Theme toggle (theme.js): a small square in the bottom-right corner. It shows a moon on the light theme
    and a sun on the dark one, the theme a click switches to. */
 .theme-toggle {
@@ -371,6 +400,12 @@ main,
 /* Caption under each project: client in the serif, then the work in one line of sans. */
 .work-title { display: block; margin: 22px 0 0; font-size: 21px; font-weight: 400; line-height: 1.2; letter-spacing: -0.02em; color: var(--ink-strong); transition: color 0.2s ease; }
 .work-item a:hover .work-title { color: var(--accent); }
+/* Thumbnail zoom on hover: the frame clips, the tile (with every image inside it) scales as one. */
+.work-frame { overflow: hidden; border-radius: 5px; }
+.work-frame > .tile { transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+	.work-item a:hover .work-frame > .tile { transform: scale(1.03); }
+}
 .work-desc { max-width: 34em; margin: 6px 0 0; font-family: var(--sans); font-size: 15px; line-height: 1.45; color: var(--muted); }
 .work-item a:hover .label { color: var(--accent); }
 
@@ -493,10 +528,10 @@ main,
 .case-aside { grid-column: 1 / span 6; }
 .case-aside .case-figure { margin-top: 34px; }
 
-.case-figure { border-radius: 0; }
+.case-figure { border-radius: 0; background: #fbf8f2; } /* the diagrams' own cream, so the margin around them blends in */
 [data-theme="dark"] .case-figure { border-radius: 5px; } /* cream diagrams read as cards on the dark page */
 .case-needs-map { grid-column: 7 / span 6; aspect-ratio: 623 / 320; }
-.case-layers { width: 92.8%; aspect-ratio: 581 / 315; }
+.case-layers { width: 92.8%; aspect-ratio: 581 / 300; }
 
 .case-media { padding-top: clamp(64px, 8.3vw, 120px); }
 .case-section + .case-media { padding-top: clamp(64px, 8.3vw, 120px); }
