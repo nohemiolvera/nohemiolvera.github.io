@@ -134,7 +134,7 @@ main,
 [data-theme="dark"] .nav a:hover { color: var(--accent); }
 [data-theme="dark"] .logo { filter: url(#ink); }
 
-/* Page transition (transition.js): a panel in the ink color slides up over the page with the logo in the page color,
+/* Page transition (transition.js): a panel in the ink color slides up over the page with the head mark in the page color,
    then fades off the next page, so there's one slide. .is-arriving covers a new page before its first paint. */
 .page-panel,
 .is-arriving::before,
@@ -150,8 +150,8 @@ main,
 .is-arriving::after {
 	content: "";
 	background: var(--bg);
-	-webkit-mask: url("assets/logo-signature.svg") center / clamp(110px, 11vw, 150px) auto no-repeat;
-	mask: url("assets/logo-signature.svg") center / clamp(110px, 11vw, 150px) auto no-repeat;
+	-webkit-mask: url("assets/loader-head.svg") center / clamp(80px, 8vw, 110px) auto no-repeat;
+	mask: url("assets/loader-head.svg") center / clamp(80px, 8vw, 110px) auto no-repeat;
 }
 .is-arriving::before { content: ""; }
 .page-panel::after { position: absolute; inset: 0; }
