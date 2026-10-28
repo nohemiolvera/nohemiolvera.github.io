@@ -568,6 +568,7 @@ main,
 	border-radius: 2px;
 	box-shadow: 0 10.4px 31.2px rgba(0, 0, 0, 0.1);
 }
+.case-gallery > .case-caption { grid-column: 1 / -1; }
 
 /* Video panel: video on the left, a short caption beside it. --flush sits the video on the bottom edge. */
 .case-panel {
