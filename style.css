@@ -488,7 +488,8 @@ main,
 	row-gap: 21px;
 }
 
-.case-section > .label { margin: 0; }
+.case-section > .label,
+.case-body > .label { margin: 0; }
 
 .case-lead {
 	grid-column: 1 / span 5;
@@ -523,6 +524,22 @@ main,
 .case-body ul { margin: 0; }
 .case-body ul { padding-left: 27px; }
 .case-body strong { font-weight: 600; }
+
+/* Pull quote inside a body column: body type, bold. */
+.case-quote { margin: 0; font-weight: 600; }
+.case-quote p { margin: 0; }
+
+/* Large number callout inside a body column, in the title's type. */
+.case-stats { display: flex; flex-wrap: wrap; gap: 24px 64px; }
+.case-stats p { display: grid; gap: 12px; margin: 0; }
+.case-stats .label { margin: 0; }
+.case-stat-num {
+	font-family: var(--serif);
+	font-size: clamp(36px, 4.45vw, 64px);
+	font-weight: 300;
+	line-height: 1.2;
+	letter-spacing: -0.03em;
+}
 
 /* Lead with a diagram under it, beside a taller body. */
 .case-aside { grid-column: 1 / span 6; }
@@ -588,6 +605,8 @@ main,
 .case-caption p:not(.label) + p { margin-top: 1em; }
 .case-caption a { color: inherit; text-underline-offset: 2px; }
 .case-caption a:hover { color: var(--accent); }
+.case-lead a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
+.case-lead a:hover { color: var(--accent); }
 
 .case article { padding-bottom: 160px; }
 
