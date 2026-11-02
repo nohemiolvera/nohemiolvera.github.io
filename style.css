@@ -378,6 +378,15 @@ main,
 [data-theme="dark"] .work-lbs { background: var(--placeholder); }
 .work-do { background: #fbf8f2; } /* artwork drawn for the cream page */
 .tile.work-lbs > img { position: absolute; height: auto; border-radius: 1px; box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1); }
+.tile.work-lbs > video {
+	position: absolute;
+	left: 6%;
+	top: 19.9%;
+	width: 88%;
+	height: auto;
+	border-radius: 6px;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
 
 .site-footer { padding: 0 var(--gutter) 54px; }
 
