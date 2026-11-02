@@ -118,12 +118,20 @@ main,
 
 .nav a,
 .label {
-	font-family: var(--mono);
+	font-family: var(--body);
 	font-weight: 500;
-	font-size: 11px;
+	font-size: 14px;
 	line-height: normal;
-	text-transform: uppercase;
+	letter-spacing: -0.01em;
 	text-decoration: none;
+}
+
+.nav a,
+.site-footer .label {
+	font-family: var(--mono);
+	font-size: 11px;
+	letter-spacing: normal;
+	text-transform: uppercase;
 }
 
 .nav a { color: #c2c2c0; } /* --bg minus --ink-strong */
@@ -233,7 +241,7 @@ main,
 	margin: 0 auto;
 	text-wrap: balance;
 	font-family: var(--sans);
-	font-size: clamp(17px, 1.6vw, 22px);
+	font-size: clamp(15px, 1.3vw, 18px);
 	font-weight: 400;
 	line-height: 1.44;
 	letter-spacing: -0.01em;
@@ -467,10 +475,10 @@ main,
 .case-meta dt,
 .case-meta dd {
 	margin: 0;
-	font-family: var(--mono);
+	font-family: var(--body);
 	font-weight: 500;
-	font-size: 11px;
-	text-transform: uppercase;
+	font-size: 14px;
+	letter-spacing: -0.01em;
 	color: var(--ink);
 }
 .case-meta dd { color: var(--meta); }
@@ -753,9 +761,9 @@ main,
 }
 .do-voice { display: flex; flex-direction: column; justify-content: center; padding: 0 15.75%; font-family: var(--body); }
 .do-voice > figcaption { position: static; margin-bottom: 5.5cqw; font-size: max(16px, 3.25cqw); font-weight: 600; }
-.do-voice ul { display: grid; gap: 2.5cqw; margin: 0; padding: 0; list-style: none; }
+.do-voice ul { display: grid; gap: 3cqw; margin: 0; padding: 0; list-style: none; }
 .do-voice li {
-	padding: 2cqw 3cqw;
+	padding: 3.5cqw 4.5cqw;
 	border-radius: 1cqw;
 	background: #fff;
 	box-shadow: 0 0.5cqw 2cqw rgba(11, 30, 72, 0.08);
@@ -1220,7 +1228,7 @@ main,
 	.is-condensed .logo img { height: 32px; }
 	/* Phone hero: more air above and below, so it holds the first screen on its own. */
 	.intro { padding-top: 88px; }
-	.intro-rest { margin-top: 16px; }
+	.intro-rest { margin-top: 4px; }
 	.clients { padding-top: 160px; }
 	/* Phone: the row becomes a marquee, with the list duplicated so the loop is seamless. */
 	.clients-row {
