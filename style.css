@@ -838,6 +838,44 @@ main,
 @keyframes hf-scroll-events { 0%, 8% { transform: none; } 46%, 54% { transform: translateY(-72.71%); } 92%, 100% { transform: none; } }
 .hf-site.is-visible .hf-site-home { animation: hf-scroll-home 14s ease-in-out infinite both; }
 .hf-site.is-visible .hf-site-events { animation: hf-scroll-events 14s ease-in-out infinite both; }
+/* Homepage tile: square, with both pages running off the bottom edge. */
+.work-frame > .hf-site { aspect-ratio: 1; }
+.work-frame > .hf-site > .hf-site-home { left: 9%; top: 4%; width: 30%; }
+.work-frame > .hf-site > .hf-site-events { left: 43%; top: 4%; width: 48%; }
+
+/* Plants of Concern: the marketing site scrolls top to bottom and back. */
+.poc-site { background: #ecf0df; }
+.hf-slide.poc-site > img { left: 22%; top: 6.05%; width: 56%; border-radius: 0.694cqw; box-shadow: 0 1cqw 3cqw rgba(0, 0, 0, 0.08); }
+@keyframes poc-scroll { 0%, 8% { transform: none; } 46%, 54% { transform: translateY(-66.8%); } 92%, 100% { transform: none; } }
+.poc-site.is-visible > img { animation: poc-scroll 18s ease-in-out infinite both; }
+
+/* Plants of Concern: the app, one screen at a time. The gap keeps neighbors off the card at rest, so
+   only whole screens show. Duplicates at both ends make the loop seamless. */
+.tile.poc-flow { --poc-w: 24cqw; --poc-gap: 7.5cqw; --poc-step: 31.5cqw; container-type: inline-size; aspect-ratio: 8 / 5; background: #e4bdd4; }
+.poc-flow-track {
+	position: absolute;
+	inset: 0 auto 0 calc(50% - var(--poc-w) / 2 - var(--poc-step) * 2);
+	display: flex;
+	align-items: center;
+	gap: var(--poc-gap);
+}
+.poc-flow-track > img { flex: none; width: var(--poc-w); height: auto; border-radius: 2.6% / 1.2%; box-shadow: 0 1cqw 3cqw rgba(96, 22, 73, 0.14); }
+@keyframes poc-flow {
+	0%, 9% { transform: translateX(calc(var(--poc-step) * -0)); }
+	12.5%, 21.5% { transform: translateX(calc(var(--poc-step) * -1)); }
+	25%, 34% { transform: translateX(calc(var(--poc-step) * -2)); }
+	37.5%, 46.5% { transform: translateX(calc(var(--poc-step) * -3)); }
+	50%, 59% { transform: translateX(calc(var(--poc-step) * -4)); }
+	62.5%, 71.5% { transform: translateX(calc(var(--poc-step) * -5)); }
+	75%, 84% { transform: translateX(calc(var(--poc-step) * -6)); }
+	87.5%, 96.5% { transform: translateX(calc(var(--poc-step) * -7)); }
+	100% { transform: translateX(calc(var(--poc-step) * -8)); }
+}
+.poc-flow.is-visible .poc-flow-track { animation: poc-flow 20s cubic-bezier(0.16, 1, 0.3, 1) infinite both; }
+
+/* Plants of Concern: the library sits in a card; the pair shares one height, without a card. */
+.poc-card { padding: 5.3% 6.75%; }
+.poc-pair { display: grid; grid-template-columns: 1004fr 1722fr; gap: 24px; align-items: start; }
 
 /* Stories slide: the three stories rise in one after another, hold, leave together, and loop. */
 .hf-stories { background: #d6ccc0; }
@@ -1095,6 +1133,8 @@ main,
 
 @media (prefers-reduced-motion: reduce) {
 	.hf-site > img,
+	.poc-site > img,
+	.poc-flow-track,
 	.hf-stories > img,
 	.hf-events > *,
 	.hf-events .hf-ascii span,
@@ -1238,6 +1278,7 @@ main,
 	/* Phone hero: more air above and below, so it holds the first screen on its own. */
 	.intro { padding-top: 88px; }
 	.intro-rest { margin-top: 4px; }
+	.tile.poc-flow { --poc-w: 54cqw; --poc-gap: 24cqw; --poc-step: 78cqw; aspect-ratio: 5 / 6.5; }
 	.clients { padding-top: 160px; }
 	/* Phone: the row becomes a marquee, with the list duplicated so the loop is seamless. */
 	.clients-row {
