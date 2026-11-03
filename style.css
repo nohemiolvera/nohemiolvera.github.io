@@ -127,7 +127,8 @@ main,
 }
 
 .nav a,
-.site-footer .label {
+.site-footer .label,
+#clients-label {
 	font-family: var(--mono);
 	font-size: 11px;
 	letter-spacing: normal;
@@ -838,16 +839,18 @@ main,
 @keyframes hf-scroll-events { 0%, 8% { transform: none; } 46%, 54% { transform: translateY(-72.71%); } 92%, 100% { transform: none; } }
 .hf-site.is-visible .hf-site-home { animation: hf-scroll-home 14s ease-in-out infinite both; }
 .hf-site.is-visible .hf-site-events { animation: hf-scroll-events 14s ease-in-out infinite both; }
-/* Homepage tile: square, with both pages running off the bottom edge. */
+/* Homepage tile: square, the home page alone. */
 .work-frame > .hf-site { aspect-ratio: 1; }
-.work-frame > .hf-site > .hf-site-home { left: 9%; top: 4%; width: 30%; }
-.work-frame > .hf-site > .hf-site-events { left: 43%; top: 4%; width: 48%; }
+.work-frame > .hf-site > .hf-site-home { left: 20%; top: 6%; width: 60%; }
 
 /* Plants of Concern: the marketing site scrolls top to bottom and back. */
 .poc-site { background: #ecf0df; }
 .hf-slide.poc-site > img { left: 22%; top: 6.05%; width: 56%; border-radius: 0.694cqw; box-shadow: 0 1cqw 3cqw rgba(0, 0, 0, 0.08); }
 @keyframes poc-scroll { 0%, 8% { transform: none; } 46%, 54% { transform: translateY(-66.8%); } 92%, 100% { transform: none; } }
 .poc-site.is-visible > img { animation: poc-scroll 18s ease-in-out infinite both; }
+.poc-site--library { background: #f4e6ef; }
+@keyframes poc-scroll-library { 0%, 8% { transform: none; } 46%, 54% { transform: translateY(-30.9%); } 92%, 100% { transform: none; } }
+.poc-site--library.is-visible > img { animation: poc-scroll-library 12s ease-in-out infinite both; }
 
 /* Plants of Concern: the app, one screen at a time. The gap keeps neighbors off the card at rest, so
    only whole screens show. Duplicates at both ends make the loop seamless. */
@@ -872,6 +875,33 @@ main,
 	100% { transform: translateX(calc(var(--poc-step) * -8)); }
 }
 .poc-flow.is-visible .poc-flow-track { animation: poc-flow 20s cubic-bezier(0.16, 1, 0.3, 1) infinite both; }
+
+/* Plants of Concern homepage tile: a tap opens the coordinates sheet over the map, inside the phone.
+   The layers rebuild the open screen; the base image is the closed one, so reduced motion stays closed. */
+.poc-thumb { background: #f7e5f0; }
+.poc-thumb-phone { position: absolute; left: 30.3125%; top: 15.9375%; width: 39.375%; height: 69.2188%; overflow: hidden; opacity: 0; background: #fff; }
+.tile.poc-thumb .poc-thumb-phone > img { position: absolute; left: 0; width: 100%; height: auto; object-fit: fill; }
+.tile.poc-thumb .poc-thumb-map { top: 0; }
+.tile.poc-thumb .poc-thumb-sheet { top: 38.68%; transform: translateY(73.23%); }
+.tile.poc-thumb .poc-thumb-buttons { top: 87.59%; }
+.poc-thumb-tap { position: absolute; left: 63.5%; top: 67.4%; width: 6.25%; aspect-ratio: 1; border-radius: 50%; background: rgba(145, 38, 107, 0.28); opacity: 0; }
+@keyframes poc-thumb-layers { 0%, 31.9% { opacity: 0; } 32%, 86% { opacity: 1; } 86.1%, 100% { opacity: 0; } }
+@keyframes poc-thumb-map { 0%, 32% { transform: none; } 40%, 78% { transform: translateY(-38.69%); } 86%, 100% { transform: none; } }
+@keyframes poc-thumb-sheet { 0%, 32% { transform: translateY(73.23%); } 40%, 78% { transform: none; } 86%, 100% { transform: translateY(73.23%); } }
+@keyframes poc-thumb-tap {
+	0%, 24% { top: 67.4%; opacity: 0; transform: scale(1.5); }
+	28% { top: 67.4%; opacity: 1; transform: scale(1); }
+	33%, 70% { top: 67.4%; opacity: 0; transform: scale(1.3); }
+	70.1% { top: 42.7%; opacity: 0; transform: scale(1.5); }
+	74% { top: 42.7%; opacity: 1; transform: scale(1); }
+	79%, 100% { top: 42.7%; opacity: 0; transform: scale(1.3); }
+}
+@media (prefers-reduced-motion: no-preference) {
+	.work-item.is-visible .poc-thumb-phone { animation: poc-thumb-layers 8s linear infinite both; }
+	.work-item.is-visible .poc-thumb-map { animation: poc-thumb-map 8s cubic-bezier(0.32, 0.72, 0, 1) infinite both; }
+	.work-item.is-visible .poc-thumb-sheet { animation: poc-thumb-sheet 8s cubic-bezier(0.32, 0.72, 0, 1) infinite both; }
+	.work-item.is-visible .poc-thumb-tap { animation: poc-thumb-tap 8s ease-out infinite both; }
+}
 
 /* Plants of Concern: the library sits in a card; the pair shares one height, without a card. */
 .poc-card { padding: 5.3% 6.75%; }
