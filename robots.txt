@@ -1,4 +1,4 @@
-# Search engines may index the site. AI training and dataset crawlers may not.
+# Search engines may index the site. AI crawlers, and AI tools fetching pages for users, may not.
 
 User-agent: GPTBot
 Disallow: /
@@ -10,6 +10,12 @@ User-agent: OAI-SearchBot
 Disallow: /
 
 User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-User
+Disallow: /
+
+User-agent: Claude-SearchBot
 Disallow: /
 
 User-agent: Claude-Web
@@ -30,6 +36,9 @@ Disallow: /
 User-agent: PerplexityBot
 Disallow: /
 
+User-agent: Perplexity-User
+Disallow: /
+
 User-agent: Bytespider
 Disallow: /
 
@@ -46,4 +55,5 @@ User-agent: Diffbot
 Disallow: /
 
 User-agent: *
+Content-Signal: search=yes, ai-train=no, ai-input=no
 Allow: /
