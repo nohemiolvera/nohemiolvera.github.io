@@ -583,12 +583,16 @@ main,
 	gap: clamp(12px, 2vw, 26px); /* not %: a % row gap collapses when the height is auto */
 	padding: 5.3% 6.75%;
 }
-.case-gallery > img {
+.case-gallery > img,
+.case-gallery > video {
+	display: block;
+	width: 100%;
 	height: auto;
 	border-radius: 2px;
 	box-shadow: 0 10.4px 31.2px rgba(0, 0, 0, 0.1);
 }
 .case-gallery > .case-caption { grid-column: 1 / -1; }
+.case-gallery--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 /* Video panel: video on the left, a short caption beside it. --flush sits the video on the bottom edge. */
 .case-panel {
