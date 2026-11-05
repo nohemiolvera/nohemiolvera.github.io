@@ -238,7 +238,7 @@ main,
 
 .intro-rest {
 	display: block;
-	max-width: 32em;
+	max-width: 42em;
 	margin: 0 auto;
 	text-wrap: balance;
 	font-family: var(--sans);
