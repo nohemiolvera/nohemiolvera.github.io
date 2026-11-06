@@ -239,7 +239,7 @@ main,
 
 .intro h1 {
 	margin: 0;
-	font-size: clamp(36px, 4.3vw, 62px);
+	font-size: clamp(32px, 3.7vw, 54px);
 	font-weight: 300;
 	line-height: 1.2;
 	letter-spacing: -0.03em;
@@ -258,7 +258,7 @@ main,
 .intro-rest {
 	display: block;
 	max-width: 42em;
-	margin: 0 auto;
+	margin: 12px auto 0;
 	text-wrap: balance;
 	font-family: var(--sans);
 	font-size: clamp(15px, 1.3vw, 18px);
@@ -1337,7 +1337,7 @@ main,
 	.is-condensed .logo img { height: 32px; }
 	/* Phone hero: more air above and below, so it holds the first screen on its own. */
 	.intro { padding-top: 88px; }
-	.intro-rest { margin-top: 4px; }
+	.intro-rest { margin-top: 10px; }
 	.tile.poc-flow { --poc-w: 54cqw; --poc-gap: 24cqw; --poc-step: 78cqw; aspect-ratio: 5 / 6.5; }
 	.clients { padding-top: 160px; }
 	/* Phone: the row becomes a marquee, with the list duplicated so the loop is seamless. */
