@@ -1411,3 +1411,76 @@ main,
 	.clients-logos[aria-hidden] { display: none; }
 	.clients-row { overflow-x: auto; }
 }
+
+/* Work as rows (index2.html, a saved alternative homepage): each project is a title over a strip of previews that
+   scrolls sideways. The strip starts on the page margin and runs to the window's right edge. */
+.work--rows {
+	display: block;
+	padding: clamp(96px, 14vw, 200px) 0 160px;
+}
+.work-row + .work-row { margin-top: clamp(80px, 10vw, 150px); }
+.work-row-head {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.4em;
+	color: inherit;
+	text-decoration: none;
+}
+.work-row-title,
+.work-row-arrow {
+	font-size: clamp(24px, 2.2vw, 32px);
+	font-weight: 400;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	color: var(--ink-strong);
+}
+.work-row-arrow {
+	font-family: var(--sans);
+	font-weight: 300;
+	color: var(--muted);
+	transition: color 0.2s ease, transform 0.3s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.work-row-head:hover .work-row-arrow,
+.work-row-head:focus-visible .work-row-arrow { color: var(--accent); transform: translateX(4px); }
+.work-row-desc {
+	margin: 8px 0 20px;
+	font-family: var(--sans);
+	font-size: 15px;
+	line-height: 1.45;
+	color: var(--muted);
+}
+.work-row-track {
+	--edge: max(var(--gutter), (100vw - var(--max)) / 2);
+	display: flex;
+	gap: 10px;
+	margin-inline: calc(var(--gutter) * -1 - max(0px, (100vw - var(--max) - 2 * var(--gutter)) / 2));
+	padding-inline: var(--edge);
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scrollbar-width: none;
+	cursor: grab;
+}
+.work-row-track::-webkit-scrollbar { display: none; }
+.work-row-track.is-dragging { cursor: grabbing; }
+.work-row-track.is-dragging .work-row-tile { pointer-events: none; }
+.work-row-tile {
+	flex: none;
+	height: clamp(180px, 22vw, 320px);
+	overflow: hidden;
+	border-radius: 5px;
+	background: var(--placeholder);
+}
+.work-row-tile > img,
+.work-row-tile > video {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.work-row-tile--top > img { object-position: top; }
+.work-row-tile:hover > img,
+.work-row-tile:hover > video { transform: scale(1.03); }
+
+/* The rows bleed to the window edge; 100vw counts the scrollbar, so clip any sideways overflow. */
+body:has(.work--rows) { overflow-x: clip; }
