@@ -400,12 +400,14 @@ main,
 .tile.work-lbs > video {
 	position: absolute;
 	left: 6%;
-	top: 19.9%;
+	top: 50%;
+	translate: 0 -50%; /* centered, whatever the video's proportions */
 	width: 88%;
 	height: auto;
 	border-radius: 6px;
 	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.1);
 }
+[data-theme="dark"] .tile.work-lbs > video { box-shadow: 0 0 0 1px rgba(253, 253, 255, 0.08), 0 8px 24px rgba(0, 0, 0, 0.3); }
 
 .site-footer { padding: 0 var(--gutter) 54px; }
 
