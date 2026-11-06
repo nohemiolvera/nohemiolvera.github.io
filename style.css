@@ -866,6 +866,11 @@ main,
 /* Homepage tile: square, the home page alone. */
 .work-frame > .hf-site { aspect-ratio: 1; }
 .work-frame > .hf-site > .hf-site-home { left: 20%; top: 6%; width: 60%; }
+/* It scrolls slowly down the page and back once the tile is on screen: 64.8% of the image's height
+   brings its footer to the tile's bottom margin. */
+@keyframes hf-scroll-thumb { 0%, 6% { transform: none; } 47%, 53% { transform: translateY(-64.8%); } 94%, 100% { transform: none; } }
+.work-item.is-visible .work-frame > .hf-site > .hf-site-home { animation: hf-scroll-thumb 32s ease-in-out infinite both; }
+@media (prefers-reduced-motion: reduce) { .work-item.is-visible .work-frame > .hf-site > .hf-site-home { animation: none; } }
 
 /* Plants of Concern: the marketing site scrolls top to bottom and back. */
 .poc-site { background: #ecf0df; }
