@@ -1,5 +1,5 @@
 // Light / dark theme. Loads in <head>, before style.css, so the page never flashes the wrong theme.
-// A saved choice wins; otherwise the site opens dark. The toggle sits in the bottom-right corner.
+// A saved choice wins; otherwise the site opens dark. The toggle sits at the end of the nav.
 (() => {
 	const root = document.documentElement;
 	const colors = { light: '#fbf8f2', dark: '#171513' };
@@ -25,7 +25,7 @@
 			try { localStorage.setItem('theme', saved); } catch (e) {}
 			apply(saved);
 		});
-		document.body.append(toggle);
+		(document.querySelector('.nav') || document.body).append(toggle);
 		apply(root.dataset.theme);
 	});
 })();
