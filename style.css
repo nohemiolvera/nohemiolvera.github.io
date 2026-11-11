@@ -514,6 +514,25 @@ main,
 }
 .case-meta dd { color: var(--meta); }
 
+/* Icons beside the read time and each meta row: line icons drawn in the text color (CSS masks, so no extra markup). */
+.case-read { display: flex; align-items: center; gap: 0.5em; }
+.case-meta dl > div { align-items: center; }
+.case-read::before,
+.case-meta [class^="case-meta-"]::before {
+	content: "";
+	flex: none;
+	width: 17px;
+	height: 17px;
+	background-color: var(--ink);
+	-webkit-mask: var(--icon) center / contain no-repeat;
+	mask: var(--icon) center / contain no-repeat;
+}
+.case-read::before { width: 15px; height: 15px; background-color: currentColor; }
+.case-read { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E"); }
+.case-meta-client { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.41' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='7' width='18' height='13' rx='2'/%3E%3Cpath d='M16 20V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v15'/%3E%3C/svg%3E"); }
+.case-meta-role { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.41' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M19 21v-1a5 5 0 0 0-5-5h-4a5 5 0 0 0-5 5v1'/%3E%3C/svg%3E"); }
+.case-meta-agency { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.41' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 21V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v17'/%3E%3Cpath d='M3 21h18M10 7h4M10 11h4M10 15h4'/%3E%3C/svg%3E"); }
+
 .case-title {
 	margin: 0;
 	font-size: clamp(36px, 4.45vw, 64px);
@@ -566,6 +585,9 @@ main,
 .case-body ul { padding-left: 27px; }
 .case-body strong { font-weight: 600; }
 
+/* Title on its own line above its paragraph. */
+.case-points strong { display: block; margin-bottom: 8px; }
+
 /* Laravel brand system: the three layers under the diagram, one column each, title on its own line. */
 .case-layers-text { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--gap); }
 .case-layers-text strong { display: block; margin-bottom: 8px; }
@@ -611,7 +633,7 @@ main,
 	color: var(--ink);
 }
 .needs-table th, .needs-table td {
-	padding: 8px 10px 8px 0;
+	padding: 7px 10px 7px 0;
 	border-bottom: 1px solid var(--line);
 	text-align: left;
 	vertical-align: middle;
@@ -623,7 +645,7 @@ main,
 	padding-bottom: 10px;
 	vertical-align: top;
 	font-family: var(--mono);
-	font-size: 10.5px;
+	font-size: 9.5px;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
 	color: var(--ink); /* same as "For every team" */
@@ -632,29 +654,29 @@ main,
 .needs-table thead th:nth-child(2) { width: 18.5%; }
 /* By a designer: the whole column, heading included, is one tinted block. */
 .needs-table thead th:last-child { width: 24.5%; padding: 12px 14px 10px; border-bottom: 0; background: var(--needs-tint); border-radius: 2px 2px 0 0; }
-.needs-sub { display: block; margin-top: 4px; font-family: var(--sans); font-size: 11.5px; line-height: 1.35; letter-spacing: 0; text-transform: none; color: var(--meta); }
-.needs-table tbody th { font-size: 13.5px; font-weight: 500; white-space: nowrap; color: var(--ink); }
-.needs-none { font-size: 12px; color: var(--meta); }
+.needs-sub { display: block; margin-top: 4px; font-family: var(--sans); font-size: 10.5px; line-height: 1.35; letter-spacing: 0; text-transform: none; color: var(--meta); }
+.needs-table tbody th { font-size: 12px; font-weight: 500; white-space: nowrap; color: var(--ink); }
+.needs-none { font-size: 11px; color: var(--meta); }
 
 /* By a designer: a titled group down the column, like the diagram's Brand repo. */
 .needs-table .needs-designer { padding: 12px 14px; border-bottom: 0; vertical-align: top; background: var(--needs-tint); border-radius: 0 0 2px 2px; }
-.needs-note { margin: 0 0 6px; font-size: 12.5px; font-weight: 500; color: var(--ink); } /* like the group's title */
+.needs-note { margin: 0 0 4px; font-size: 11.5px; font-weight: 500; color: var(--ink); } /* like the group's title */
 /* The whole column is tinted, like a Brand repo row; its items are plain lines. */
-.needs-designer .needs-chip { display: block; padding: 5px 0; border: 0; font-size: 12px; white-space: nowrap; }
+.needs-designer .needs-chip { display: block; padding: 4px 0; border: 0; font-size: 11px; white-space: nowrap; }
 
 .needs-chip {
 	display: inline-block;
-	padding: 3px 7px;
+	padding: 2px 6px;
 	border: 1px solid var(--needs-box);
 	border-radius: 2px;
-	font-size: 11.5px;
+	font-size: 10.5px;
 	line-height: 1.35;
 	color: var(--ink);
 }
 .needs-chip--planned { border-style: dashed; color: var(--meta); }
 
-.needs-legend { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-family: var(--sans); font-size: 11.5px; color: var(--meta); }
-.needs-chip--key { width: 10px; height: 10px; padding: 0; border-radius: 50%; }
+.needs-legend { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-family: var(--sans); font-size: 10.5px; color: var(--meta); }
+.needs-chip--key { width: 9px; height: 9px; padding: 0; border-radius: 50%; }
 .needs-legend .needs-chip--planned { margin-left: 12px; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -752,17 +774,17 @@ main,
 	font-size: 14px;
 	color: var(--ink);
 	cursor: pointer;
-	transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+	transition: color 0.2s ease, border-color 0.2s ease;
 }
 .sys-example:hover { border-color: var(--ink); }
-.sys-example.is-active { border-color: var(--sys-accent); color: var(--sys-accent); background: color-mix(in srgb, var(--sys-accent) 10%, transparent); }
+.sys-example.is-active { border-color: var(--sys-accent); color: var(--sys-accent); }
 .sys-example:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 
-.sys-edge { fill: none; stroke: var(--sys-line); stroke-width: 1.25; transition: stroke 0.25s ease, opacity 0.25s ease; }
+.sys-edge { fill: none; stroke: var(--sys-line); stroke-width: 1; vector-effect: non-scaling-stroke; transition: stroke 0.25s ease, opacity 0.25s ease; }
 .sys-edge.is-pending { stroke-dasharray: 3 5; }
 .sys-pulse { fill: none; stroke: var(--sys-accent); stroke-width: 7; stroke-linecap: round; opacity: 0; }
 
-.sys-box { fill: var(--sys-bg); stroke: var(--sys-box-stroke); stroke-width: 1; transition: fill 0.3s ease; }
+.sys-box { fill: var(--sys-bg); stroke: var(--sys-box-stroke); stroke-width: 1; vector-effect: non-scaling-stroke; transition: fill 0.3s ease; }
 .sys-node.is-pending .sys-box { stroke-dasharray: 4 4; }
 .sys-row { fill: color-mix(in srgb, var(--ink) 5%, transparent); }
 
