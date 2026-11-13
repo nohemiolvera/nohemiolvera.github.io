@@ -264,11 +264,6 @@
 
 		this.canvas.appendChild(svg);
 
-		// Lengths need the SVG in the document.
-		this.edges.forEach(function (e) {
-			e.len = e.path.getTotalLength();
-			e.pulse.style.strokeDasharray = '0 ' + (e.len + 20); // a single round dot
-		});
 	};
 
 	// Keep only these nodes, and the edges between them, at full strength.
@@ -293,14 +288,22 @@
 		});
 	}
 
-	// An example's path, lit, with a dot traveling it from Figma to the output on a loop.
+	// A few dots on each line of the path, DOT_GAP apart, drifting from Figma toward the output at
+	// DOT_SPEED a second (both in diagram units). Each line starts at its own point so they don't march in step.
+	var DOT_GAP = 30;
+	var DOT_SPEED = 15;
+
+	// An example's path, lit, with a steady stream of dots flowing along it from Figma to the output.
 	Diagram.prototype.showExample = function (key) {
 		var self = this;
 		this.shown = key;
 		this.timers.forEach(clearTimeout);
 		this.timers = [];
 		for (var k in this.nodeEls) this.nodeEls[k].classList.remove('is-lit', 'is-done');
-		this.edges.forEach(function (e) { e.pulse.getAnimations().forEach(function (a) { a.cancel(); }); });
+		this.edges.forEach(function (e) {
+			e.pulse.getAnimations().forEach(function (a) { a.cancel(); });
+			e.pulse.classList.remove('is-flowing');
+		});
 		this.links.forEach(function (l) {
 			var id = l.getAttribute('data-sys-example');
 			l.classList.toggle('is-active', id === key);
@@ -312,22 +315,16 @@
 		path.forEach(function (id) { keep[id] = 1; self.light(id); });
 		var hops = pathEdges(this.edges, path);
 		this.highlight(keep, function (e) { return hops.indexOf(e) > -1; });
+		hops.forEach(function (e) { e.pulse.classList.add('is-flowing'); });
 		if (reduceMotion.matches) return;
 
-		(function loop() {
-			var at = 0;
-			hops.forEach(function (e) {
-				var dur = Math.max(500, e.len / 0.22); // about the same speed on every hop
-				self.timers.push(setTimeout(function () {
-					e.pulse.animate(
-						[{ strokeDashoffset: 0, opacity: 1 }, { strokeDashoffset: -e.len, opacity: 1 }],
-						{ duration: dur, easing: 'cubic-bezier(.45,0,.55,1)' }
-					);
-				}, at));
-				at += dur + 120; // a beat inside each box before moving on
-			});
-			self.timers.push(setTimeout(loop, at + 600));
-		})();
+		hops.forEach(function (e, i) {
+			var start = (i * 0.37 % 1) * DOT_GAP;
+			e.pulse.animate(
+				[{ strokeDashoffset: -start }, { strokeDashoffset: -start - DOT_GAP }],
+				{ duration: DOT_GAP / DOT_SPEED * 1000, iterations: Infinity }
+			);
+		});
 	};
 
 	Diagram.prototype.light = function (id) {

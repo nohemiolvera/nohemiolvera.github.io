@@ -791,11 +791,13 @@ main,
 .sys-example:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 
 .sys-edge { fill: none; stroke: var(--sys-line); stroke-width: 1; vector-effect: non-scaling-stroke; transition: stroke 0.25s ease, opacity 0.25s ease; }
-.sys-edge.is-pending { stroke-dasharray: 3 5; }
-.sys-pulse { fill: none; stroke: var(--sys-accent); stroke-width: 7; stroke-linecap: round; opacity: 0; }
+/* Lines are dotted: 1px dots, 3px apart. */
+.sys-edge { stroke-dasharray: 1 3; }
+.sys-pulse { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0 30; opacity: 0; }
+.sys-pulse.is-flowing { opacity: 1; }
 
 .sys-box { fill: var(--sys-bg); stroke: var(--sys-box-stroke); stroke-width: 1; vector-effect: non-scaling-stroke; transition: fill 0.3s ease; }
-.sys-node.is-pending .sys-box { stroke-dasharray: 4 4; }
+.sys-node.is-pending .sys-box { stroke-dasharray: 1 3; }
 .sys-row { fill: color-mix(in srgb, var(--ink) 5%, transparent); }
 
 .sys-title, .sys-rowtitle { font-family: var(--sans); font-size: 13.5px; font-weight: 500; fill: currentColor; }
