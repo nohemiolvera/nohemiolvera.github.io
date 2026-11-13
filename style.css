@@ -438,6 +438,7 @@ main,
 .footer-credits p { margin: 0; }
 .footer-credits a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
 .footer-credits a:hover { color: var(--ink); }
+@media (max-width: 720px) { .footer-credits { text-align: center; } }
 .tile--natural { aspect-ratio: auto; }
 .tile--natural > img { height: auto; }
 .work-item { margin: 0; }
@@ -518,6 +519,9 @@ main,
 	color: var(--ink);
 }
 .case-meta dd { color: var(--meta); }
+/* What I did: the list sits on its own line under the label, lined up with the label text. */
+.case-meta .case-meta-role { flex-wrap: wrap; row-gap: 6px; }
+.case-meta .case-meta-role dd { flex-basis: 100%; padding-left: calc(17px + 0.6em); line-height: 1.5; }
 
 /* Icons beside the read time and each meta row: line icons drawn in the text color (CSS masks, so no extra markup). */
 .case-read { display: flex; align-items: center; gap: 0.5em; }
@@ -1205,16 +1209,28 @@ main,
 	96%, 100% { opacity: 0; }
 }
 @keyframes lc-grow-loop {
-	0%, 44% { transform: scale(0.055); opacity: 1; }
-	62%, 88% { transform: scale(1); opacity: 1; }
+	0%, 4% { transform: scale(0.055); opacity: 1; }
+	40%, 88% { transform: scale(1); opacity: 1; }
 	96% { transform: scale(1); opacity: 0; }
 	100% { transform: scale(0.055); opacity: 0; }
 }
 
-.is-visible .lc-cubes .lc-draw { stroke-dasharray: 1; animation: lc-draw 4.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+.is-visible .lc-cubes .lc-draw { stroke-dasharray: 1; animation: lc-draw 3s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
 .is-visible .lc-cubes .lc-draw--late { animation-name: lc-draw-late; }
-.is-visible .lc-cubes .lc-fill { animation: lc-fill 4.5s ease infinite both; }
-.is-visible .lc-cubes .lc-grow { animation: lc-grow-loop 4.5s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+.is-visible .lc-cubes .lc-fill { animation: lc-fill 3s ease infinite both; }
+.is-visible .lc-cubes .lc-grow { animation: lc-grow-loop 3s cubic-bezier(0.6, 0, 0.2, 1) infinite both; }
+
+/* The labels type themselves out as their stage happens: "From" with the first lines, both "To" labels as
+   the cubes finish. One step per letter. */
+@keyframes lc-type-wireframe { 0%, 4% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(14, end); } 22%, 88% { clip-path: inset(0); opacity: 1; } 96%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes lc-type-idea { 0%, 4% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(9, end); } 16%, 88% { clip-path: inset(0); opacity: 1; } 96%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes lc-type-solid { 0%, 32% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(8, end); } 42%, 88% { clip-path: inset(0); opacity: 1; } 96%, 100% { clip-path: inset(0); opacity: 0; } }
+@keyframes lc-type-shipped { 0%, 32% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(10, end); } 44%, 88% { clip-path: inset(0); opacity: 1; } 96%, 100% { clip-path: inset(0); opacity: 0; } }
+.is-visible .lc-cubes .lc-type { animation: 3s linear infinite both; }
+.is-visible .lc-cubes .lc-type--wireframe { animation-name: lc-type-wireframe; }
+.is-visible .lc-cubes .lc-type--idea { animation-name: lc-type-idea; }
+.is-visible .lc-cubes .lc-type--solid { animation-name: lc-type-solid; }
+.is-visible .lc-cubes .lc-type--shipped { animation-name: lc-type-shipped; }
 
 /* Flagship slide loops: every element enters on its own beat, in reading order (Laracon, 26, the three
    lines, Laravel, then the shape), all hold together, then all leave on the same frame and it starts over.
@@ -1375,6 +1391,7 @@ main,
 	.lc-anim .lc-draw,
 	.lc-anim .lc-fill,
 	.lc-anim .lc-grow,
+	.lc-anim .lc-type,
 	.lc-anim .lc-flag-title img,
 	.lc-flagship > img,
 	.lc-flagship > svg { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0; }
