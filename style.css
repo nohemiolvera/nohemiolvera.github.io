@@ -433,6 +433,11 @@ main,
 	gap: 24px;
 }
 .site-footer .label { margin: 0; }
+/* Credits under the footer line: what the site is built with. */
+.footer-credits { margin-top: 24px; font-family: var(--sans); font-size: 11px; line-height: 1.55; color: var(--meta); }
+.footer-credits p { margin: 0; }
+.footer-credits a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
+.footer-credits a:hover { color: var(--ink); }
 .tile--natural { aspect-ratio: auto; }
 .tile--natural > img { height: auto; }
 .work-item { margin: 0; }
@@ -750,7 +755,8 @@ main,
 /* Laravel brand system diagram (system-diagram.js): Figma feeding every output.
    Draws in the page's ink and lines, so it follows the theme. --sys-accent is the change traveling through it. */
 .sys {
-	--sys-accent: #f53003; /* Laravel red */
+	--sys-accent: color-mix(in srgb, var(--ink) 55%, transparent); /* the moving dot */
+	--sys-fill: color-mix(in srgb, var(--ink) 1.75%, var(--sys-bg)); /* a highlighted box: the 7% tint at 25% */
 	--sys-line: var(--line);
 	--sys-edge-strong: color-mix(in srgb, var(--ink) 70%, transparent);
 	--sys-box-stroke: color-mix(in srgb, var(--ink) 24%, transparent);
@@ -776,8 +782,8 @@ main,
 	cursor: pointer;
 	transition: color 0.2s ease, border-color 0.2s ease;
 }
-.sys-example:hover { border-color: var(--ink); }
-.sys-example.is-active { border-color: var(--sys-accent); color: var(--sys-accent); }
+.sys-example:hover { border-color: color-mix(in srgb, var(--ink) 40%, transparent); }
+.sys-example.is-active { border-color: color-mix(in srgb, var(--ink) 60%, transparent); }
 .sys-example:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 
 .sys-edge { fill: none; stroke: var(--sys-line); stroke-width: 1; vector-effect: non-scaling-stroke; transition: stroke 0.25s ease, opacity 0.25s ease; }
@@ -797,17 +803,16 @@ main,
 .sys-node:focus-visible .sys-box { stroke: var(--ink); stroke-width: 2; }
 
 /* The change arriving. */
-.sys-node.is-lit .sys-box { stroke: var(--sys-accent); }
-.sys-node--out.is-done .sys-box { fill: color-mix(in srgb, var(--sys-accent) 12%, var(--sys-bg)); }
+/* Highlighted: a faint fill, the outline stays as it is. */
+.sys-node.is-lit .sys-box { fill: var(--sys-fill); }
 
 /* Hover or focus a node: its whole path stays, everything else steps back. */
 .sys.is-focusing .sys-node:not(.is-on) { opacity: 0.28; }
 .sys.is-focusing .sys-edge:not(.is-on) { opacity: 0.25; }
 .sys.is-focusing .sys-edge.is-on { stroke: var(--sys-edge-strong); }
-.sys.is-focusing .sys-node.is-on .sys-box { stroke: color-mix(in srgb, var(--ink) 60%, transparent); }
-.sys.is-focusing .sys-node.is-on.is-lit .sys-box { stroke: var(--sys-accent); }
+.sys.is-focusing .sys-node.is-on .sys-box { fill: var(--sys-fill); }
 /* While exploring by hover, the request's red steps aside so the hover path reads on its own. */
-.sys.is-exploring .sys-node.is-on .sys-box { stroke: color-mix(in srgb, var(--ink) 60%, transparent); fill: var(--sys-bg); }
+.sys.is-exploring .sys-node:not(.is-on) .sys-box { fill: var(--sys-bg); }
 .sys.is-exploring .sys-pulse { visibility: hidden; }
 
 .sys-intro { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin: clamp(32px, 4.2vw, 56px) 0 0; font-family: var(--body); font-size: 15px; color: var(--sys-muted); }
