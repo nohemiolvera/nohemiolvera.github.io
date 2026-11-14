@@ -944,7 +944,8 @@ main,
 .jp-row--4 { grid-template-columns: 584fr 599fr; }
 
 /* Laravel Live Japan key visual, 1200 x 680. 1 design px = 100cqw / 1200. */
-.jp-hero { container-type: inline-size; aspect-ratio: 1200 / 680; background: #f7513b; }
+.jp-hero { container-type: inline-size; aspect-ratio: 1200 / 680; background: #e54523; } /* the Laracon orange, so the event slides match */
+@supports (color: color(display-p3 0 0 0)) { .jp-hero { background: color(display-p3 0.8967 0.2707 0.1374); } }
 /* Sized so the frame's visible edges line up with the top of the title and the bottom of the year block. */
 .jp-illo { position: absolute; left: 5.93%; top: 21.07%; width: 32.87%; aspect-ratio: 1; }
 .jp-illo > img { position: absolute; display: block; height: auto; }

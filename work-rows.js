@@ -3,7 +3,7 @@
 // it picks up again from wherever it was left. Reduced motion keeps the strips still.
 // With a mouse, a strip can be dragged sideways; a drag doesn't count as a click on a preview.
 // Runs before video.js, so the repeated videos play like the others.
-const SPEED = 22; // px per second
+const SPEED = Number(document.body.dataset.rowSpeed) || 22; // px per second; a page can set its own with data-row-speed
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 document.querySelectorAll('.work-row-track').forEach((track, index) => {
