@@ -1,19 +1,26 @@
 // Work rows: each strip drifts slowly to the left on its own and loops. The previews are repeated
-// once so the loop has no seam. Hovering, dragging, touching, or scrolling a strip pauses it, and
-// it picks up again from wherever it was left. Reduced motion keeps the strips still.
-// With a mouse, a strip can be dragged sideways; a drag doesn't count as a click on a preview.
+// once so the loop has no seam. Hovering, dragging, or scrolling a strip pauses it, and it picks up
+// again from wherever it was left. With a mouse, a strip can be dragged sideways; a drag doesn't count
+// as a click on a preview. A strip only moves while it's on screen.
+// On touch screens the strips don't drift and aren't repeated: they swipe natively, which keeps phones
+// smooth. Reduced motion keeps the strips still too.
 // Runs before video.js, so the repeated videos play like the others.
 const SPEED = Number(document.body.dataset.rowSpeed) || 22; // px per second; a page can set its own with data-row-speed
-const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
+const still = touch || matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 document.querySelectorAll('.work-row-track').forEach((track, index) => {
+	if (still) { track.classList.add('is-still'); return; }
 	const tiles = [...track.children];
 	for (const tile of tiles) {
 		const copy = tile.cloneNode(true);
 		copy.setAttribute('aria-hidden', 'true');
 		track.append(copy);
 	}
-	const loopWidth = () => track.children[tiles.length].offsetLeft - tiles[0].offsetLeft;
+	// Measured once, and again only when the layout changes, not on every frame.
+	let width = 0;
+	const measure = () => { width = track.children[tiles.length].offsetLeft - tiles[0].offsetLeft; };
+	new ResizeObserver(measure).observe(track);
 
 	let pos = 0, hovered = false, held = false, resumeAt = 0, visible = false;
 	const pauseFor = (ms) => { resumeAt = performance.now() + ms; };
@@ -47,15 +54,18 @@ document.querySelectorAll('.work-row-track').forEach((track, index) => {
 	track.addEventListener('wheel', () => pauseFor(1500), { passive: true });
 	track.addEventListener('touchend', () => pauseFor(2500), { passive: true });
 
-	if (still) return;
-	new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }).observe(track);
+	let last = 0, frame = 0;
+	new IntersectionObserver(([entry]) => {
+		visible = entry.isIntersecting;
+		// Off screen the strip stops entirely; it starts again when it comes back.
+		if (visible && !frame) { last = 0; pos = track.scrollLeft; frame = requestAnimationFrame(tick); }
+	}).observe(track);
 
-	let last = 0;
 	const tick = (now) => {
+		if (!visible) { frame = 0; return; }
 		const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
 		last = now;
-		const width = loopWidth();
-		if (hovered || held || down || now < resumeAt || !visible) {
+		if (hovered || held || down || now < resumeAt) {
 			pos = track.scrollLeft; // pick up from wherever it was left
 		} else {
 			// Rows run at slightly different speeds, so they don't move in lockstep.
@@ -66,7 +76,6 @@ document.querySelectorAll('.work-row-track').forEach((track, index) => {
 			if (pos < 0) pos += width;
 		}
 		if (Math.abs(track.scrollLeft - pos) >= 0.5) track.scrollLeft = pos;
-		requestAnimationFrame(tick);
+		frame = requestAnimationFrame(tick);
 	};
-	requestAnimationFrame(tick);
 });

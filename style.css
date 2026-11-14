@@ -1674,3 +1674,8 @@ main,
 
 /* The rows bleed to the window edge; 100vw counts the scrollbar, so clip any sideways overflow. */
 body:has(.work--rows) { overflow-x: clip; }
+/* Strips off screen aren't rendered at all, so their videos and animations cost nothing until they're near. */
+.work-row-track { content-visibility: auto; contain-intrinsic-height: auto clamp(180px, 22vw, 320px); }
+/* Touch screens (work-rows.js): no drift, the strip swipes natively and settles on each preview. */
+.work-row-track.is-still { scroll-snap-type: x proximity; scroll-padding-inline: var(--edge); cursor: auto; }
+.work-row-track.is-still > * { scroll-snap-align: start; }
