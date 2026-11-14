@@ -412,11 +412,11 @@ main,
 
 .site-footer { padding: 0 var(--gutter) 54px; }
 
-/* Big email link above the footer line. */
+/* Big email link above the footer line, on the left. */
 .footer-cta {
 	display: block;
 	width: fit-content;
-	margin: 0 auto clamp(96px, 12vw, 172px);
+	margin: 0 0 clamp(96px, 12vw, 172px);
 	font-size: clamp(36px, 4.3vw, 62px); /* same as the hero headline */
 	font-weight: 300;
 	line-height: 1.1;
