@@ -1,81 +1,108 @@
-// Work rows: each strip drifts slowly to the left on its own and loops. The previews are repeated
-// once so the loop has no seam. Hovering, dragging, or scrolling a strip pauses it, and it picks up
-// again from wherever it was left. With a mouse, a strip can be dragged sideways; a drag doesn't count
-// as a click on a preview. A strip only moves while it's on screen.
-// On touch screens the strips don't drift and aren't repeated: they swipe natively, which keeps phones
-// smooth. Reduced motion keeps the strips still too.
-// Runs before video.js, so the repeated videos play like the others.
+// Work rows: each strip drifts to the left on its own and loops forever. The previews are
+// moved with transforms, which stay smooth on phones, and the loop has no copies: a preview that leaves on the
+// left is moved to the end of the line. Drag or swipe a strip to move it, with a little momentum when you let
+// go; hovering pauses it. Vertical swipes still scroll the page. A strip only moves while it's on screen.
+// Reduced motion stops the drift; dragging still works.
 const SPEED = Number(document.body.dataset.rowSpeed) || 22; // px per second; a page can set its own with data-row-speed
-const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
-const still = touch || matchMedia('(prefers-reduced-motion: reduce)').matches;
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 document.querySelectorAll('.work-row-track').forEach((track, index) => {
-	if (still) { track.classList.add('is-still'); return; }
 	const tiles = [...track.children];
-	for (const tile of tiles) {
-		const copy = tile.cloneNode(true);
-		copy.setAttribute('aria-hidden', 'true');
-		track.append(copy);
-	}
-	// Measured once, and again only when the layout changes, not on every frame.
-	let width = 0;
-	const measure = () => { width = track.children[tiles.length].offsetLeft - tiles[0].offsetLeft; };
-	new ResizeObserver(measure).observe(track);
+	if (tiles.length < 2) return;
+	track.classList.add('is-belt');
+	const speed = SPEED * (1 + (index % 3) * 0.12); // rows at slightly different speeds, so they don't move in lockstep
 
-	let pos = 0, hovered = false, held = false, resumeAt = 0, visible = false;
-	const pauseFor = (ms) => { resumeAt = performance.now() + ms; };
+	// Layout, measured with the previews in their resting places.
+	let base = [], widths = [], loop = 0, edge = 0;
+	const measure = () => {
+		tiles.forEach((tile) => { tile.style.transform = ''; });
+		const first = tiles[0].offsetLeft;
+		base = tiles.map((tile) => tile.offsetLeft - first);
+		widths = tiles.map((tile) => tile.offsetWidth);
+		const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+		loop = base[base.length - 1] + widths[widths.length - 1] + gap;
+		edge = first; // the page margin to the left of the first preview
+		place();
+	};
 
-	// Mouse drag
-	let startX = 0, startScroll = 0, moved = false, down = false;
+	// x is how far the strip has travelled. Each preview sits at its resting place minus x, wrapped around the
+	// loop so it reappears at the end once it's fully past the left edge of the window.
+	let x = 0;
+	const place = () => {
+		if (!loop) return;
+		tiles.forEach((tile, i) => {
+			const w = widths[i] + edge;
+			const p = ((base[i] - x + w) % loop + loop) % loop - w;
+			tile.style.transform = `translate3d(${p - base[i]}px, 0, 0)`;
+		});
+	};
+
+	let visible = false, hovered = false, down = false, moved = false, frame = 0, last = 0;
+	let startX = 0, startY = 0, startPos = 0, velocity = 0, lastMoveX = 0, lastMoveAt = 0, resumeAt = 0;
+
 	track.addEventListener('pointerdown', (e) => {
-		if (e.pointerType !== 'mouse') { held = true; return; }
-		if (e.button !== 0) return;
-		down = true; moved = false;
-		startX = e.clientX; startScroll = track.scrollLeft;
+		if (e.pointerType === 'mouse' && e.button !== 0) return;
+		down = true; moved = false; velocity = 0;
+		startX = lastMoveX = e.clientX; startY = e.clientY; startPos = x; lastMoveAt = performance.now();
 	});
-	addEventListener('pointermove', (e) => {
+	track.addEventListener('pointermove', (e) => {
 		if (!down) return;
 		const dx = e.clientX - startX;
-		if (!moved && Math.abs(dx) > 4) { moved = true; track.classList.add('is-dragging'); }
-		if (moved) track.scrollLeft = startScroll - dx;
+		if (!moved) {
+			// A mostly vertical swipe is a page scroll: let it go.
+			if (Math.abs(e.clientY - startY) > Math.abs(dx) && e.pointerType !== 'mouse') { down = false; return; }
+			if (Math.abs(dx) < 5) return;
+			moved = true;
+			track.classList.add('is-dragging');
+			try { track.setPointerCapture(e.pointerId); } catch (err) { /* the pointer is already gone */ }
+		}
+		const now = performance.now();
+		velocity = (lastMoveX - e.clientX) / Math.max(1, now - lastMoveAt) * 1000; // px per second
+		lastMoveX = e.clientX; lastMoveAt = now;
+		x = startPos - dx;
+		place();
 	});
-	addEventListener('pointerup', () => {
-		held = false;
+	const release = () => {
 		if (!down) return;
 		down = false;
 		track.classList.remove('is-dragging');
-		pauseFor(1500);
-	});
-	addEventListener('pointercancel', () => { held = false; down = false; track.classList.remove('is-dragging'); });
-	track.addEventListener('click', (e) => { if (moved) { e.preventDefault(); moved = false; } }, true);
+		resumeAt = performance.now() + 900; // glide, then drift again
+		if (!frame && visible) frame = requestAnimationFrame(tick);
+	};
+	track.addEventListener('pointerup', release);
+	track.addEventListener('pointercancel', release);
+	track.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
 	track.addEventListener('dragstart', (e) => e.preventDefault());
 	track.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hovered = true; });
 	track.addEventListener('pointerleave', () => { hovered = false; });
-	track.addEventListener('wheel', () => pauseFor(1500), { passive: true });
-	track.addEventListener('touchend', () => pauseFor(2500), { passive: true });
-
-	let last = 0, frame = 0;
-	new IntersectionObserver(([entry]) => {
-		visible = entry.isIntersecting;
-		// Off screen the strip stops entirely; it starts again when it comes back.
-		if (visible && !frame) { last = 0; pos = track.scrollLeft; frame = requestAnimationFrame(tick); }
-	}).observe(track);
+	track.addEventListener('keydown', (e) => {
+		if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+		e.preventDefault();
+		velocity = e.key === 'ArrowRight' ? 1400 : -1400;
+		resumeAt = performance.now() + 900;
+		if (!frame && visible) frame = requestAnimationFrame(tick);
+	});
 
 	const tick = (now) => {
-		if (!visible) { frame = 0; return; }
-		const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
+		frame = 0;
+		if (!visible) return;
+		const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
 		last = now;
-		if (hovered || held || down || now < resumeAt) {
-			pos = track.scrollLeft; // pick up from wherever it was left
-		} else {
-			// Rows run at slightly different speeds, so they don't move in lockstep.
-			pos += dt * SPEED * (1 + (index % 3) * 0.12);
+		if (!down) {
+			if (Math.abs(velocity) > 5) {
+				x += velocity * dt; // momentum after a drag or a key press, easing out
+				velocity *= Math.pow(0.004, dt);
+			} else if (!hovered && !still && now >= resumeAt) {
+				x += speed * dt;
+			}
+			place();
 		}
-		if (width > 0) {
-			if (pos >= width) pos -= width;
-			if (pos < 0) pos += width;
-		}
-		if (Math.abs(track.scrollLeft - pos) >= 0.5) track.scrollLeft = pos;
 		frame = requestAnimationFrame(tick);
 	};
+
+	new ResizeObserver(measure).observe(track);
+	new IntersectionObserver(([entry]) => {
+		visible = entry.isIntersecting;
+		if (visible && !frame) { last = 0; frame = requestAnimationFrame(tick); }
+	}, { rootMargin: '100px 0px' }).observe(track);
 });

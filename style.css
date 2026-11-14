@@ -412,11 +412,11 @@ main,
 
 .site-footer { padding: 0 var(--gutter) 54px; }
 
-/* Big email link above the footer line, on the left. */
+/* Big email link above the footer line, centered. */
 .footer-cta {
 	display: block;
 	width: fit-content;
-	margin: 0 0 clamp(96px, 12vw, 172px);
+	margin: 0 auto clamp(96px, 12vw, 172px);
 	font-size: clamp(36px, 4.3vw, 62px); /* same as the hero headline */
 	font-weight: 300;
 	line-height: 1.1;
@@ -1676,6 +1676,6 @@ main,
 body:has(.work--rows) { overflow-x: clip; }
 /* Strips off screen aren't rendered at all, so their videos and animations cost nothing until they're near. */
 .work-row-track { content-visibility: auto; contain-intrinsic-height: auto clamp(180px, 22vw, 320px); }
-/* Touch screens (work-rows.js): no drift, the strip swipes natively and settles on each preview. */
-.work-row-track.is-still { scroll-snap-type: x proximity; scroll-padding-inline: var(--edge); cursor: auto; }
-.work-row-track.is-still > * { scroll-snap-align: start; }
+/* Moved by work-rows.js with transforms: the strip doesn't scroll itself; vertical swipes still scroll the page. */
+.work-row-track.is-belt { overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.work-row-track.is-belt > * { will-change: transform; }
