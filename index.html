@@ -13,7 +13,7 @@
 	<meta name="theme-color" content="#171513">
 	<script src="theme.js?v=20261105c"></script>
 	<script src="transition.js"></script>
-	<link rel="stylesheet" href="style.css?v=20261114b">
+	<link rel="stylesheet" href="style.css?v=20261114f">
 	<script>document.documentElement.classList.add('js')</script>
 	<style>
 		/* Homepage: centered hero with a link down to the work, then one tall row per project, each strip running
@@ -85,10 +85,10 @@
 			mask: url(assets/logo-poc-lockup.svg) center / contain no-repeat;
 		}
 		.home-rows .poc-logo-note { position: absolute; left: 0; right: 0; bottom: 7%; font-family: var(--sans); font-size: 13px; text-align: center; color: rgba(255, 255, 255, 0.75); }
-		/* The logo fades and settles in, holds, then fades out; the note follows a beat later. */
-		@keyframes poc-logo-in { 0%, 6% { opacity: 0; transform: translateY(6px); } 26%, 88% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
+		/* The logo is revealed left to right, as if wiped on, holds, then fades out; the note follows a beat later. */
+		@keyframes poc-logo-in { 0% { clip-path: inset(-10% 102% -10% -2%); opacity: 0; } 5% { clip-path: inset(-10% 102% -10% -2%); opacity: 1; } 30%, 88% { clip-path: inset(-10% -2% -10% -2%); opacity: 1; } 100% { clip-path: inset(-10% -2% -10% -2%); opacity: 0; } }
 		@keyframes poc-note-in { 0%, 22% { opacity: 0; } 38%, 88% { opacity: 1; } 100% { opacity: 0; } }
-		.home-rows .poc-logo-mark { animation: poc-logo-in 4.5s ease infinite both; }
+		.home-rows .poc-logo-mark { animation: poc-logo-in 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite both; }
 		.home-rows .poc-logo-note { animation: poc-note-in 4.5s ease infinite both; }
 		@media (prefers-reduced-motion: reduce) { .home-rows .poc-logo-mark, .home-rows .poc-logo-note { animation: none; } }
 		/* Hacktoberfest's first slide: the pink logo fading in on dark green. */
@@ -162,7 +162,7 @@
 					<a class="work-row-tile work-card" href="laravel.html" tabindex="-1" style="aspect-ratio: 4 / 3"><video src="assets/lbs-laravel-moat.mp4" poster="assets/lbs-laravel-moat-poster.jpg" width="1200" height="675" muted loop playsinline preload="none" aria-label="Animated dark Laravel blog image from the self-serve tool: Introducing Moat"></video><span class="work-card-caption" aria-hidden="true">Blog image, made with the self-serve tool</span></a>
 					<a class="work-row-tile work-card" href="laravel.html" tabindex="-1" style="aspect-ratio: 4 / 3"><video src="assets/lbs-blog-tool.mp4" poster="assets/lbs-blog-tool-poster.jpg" width="1920" height="1080" muted loop playsinline preload="none" aria-label="The self-serve blog image tool"></video><span class="work-card-caption" aria-hidden="true">Built a custom self-serve tool</span></a>
 					<a class="work-row-tile work-card" href="laravel.html" tabindex="-1" style="aspect-ratio: 4 / 3"><video src="assets/lbs-guidelines-site.mp4" poster="assets/lbs-guidelines-site-poster.jpg" width="1440" height="842" muted loop playsinline preload="none" aria-label="The Laravel brand guidelines site"></video><span class="work-card-caption" aria-hidden="true">Built a guidelines hub for logos, fonts, tokens, and Claude skills</span></a>
-					<a class="work-row-tile work-card work-card--sys" href="laravel.html" tabindex="-1" style="aspect-ratio: 16 / 9" aria-label="The brand system diagram: Figma feeding the brand repo, the tools people use, and every output"><div class="sys" data-sys><div class="sys-canvas"></div></div><span class="work-card-caption" aria-hidden="true">The system: one Figma source, every output</span></a>
+					<a class="work-row-tile work-card work-card--sys" href="laravel.html" tabindex="-1" style="aspect-ratio: 16 / 9" aria-label="The brand system diagram: Figma feeding the brand repo, the tools people use, and every output"><div class="sys" data-sys data-sys-wide><div class="sys-canvas"></div></div><span class="work-card-caption" aria-hidden="true">The system: one Figma source, every output</span></a>
 				</div>
 			</article>
 			<article class="work-row reveal">
@@ -394,7 +394,7 @@
 	<script src="header.js"></script>
 	<script src="fade.js"></script>
 	<script src="work-rows.js"></script>
-	<script src="system-diagram.js?v=20261113e"></script>
+	<script src="system-diagram.js?v=20261114"></script>
 	<script src="ascii-live.js"></script>
 	<script src="video.js"></script>
 	<script src="roles.js"></script>

@@ -198,7 +198,8 @@
 	}
 
 	Diagram.prototype.render = function () {
-		var L = stacked.matches ? layoutStacked() : layoutWide();
+		// data-sys-wide keeps the wide layout at every size, scaled down (the homepage thumbnail).
+		var L = stacked.matches && !this.root.hasAttribute('data-sys-wide') ? layoutStacked() : layoutWide();
 		this.canvas.innerHTML = '';
 
 		var svg = el('svg', {
